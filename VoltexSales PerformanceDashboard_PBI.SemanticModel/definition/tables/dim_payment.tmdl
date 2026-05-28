@@ -1,0 +1,34 @@
+table dim_payment
+	lineageTag: fde25fc7-b3cf-4710-b3c2-e33dee63dad8
+
+	column Payment_ID
+		dataType: string
+		lineageTag: b3ed8e34-5ba3-450a-bc99-c5c604b77c42
+		summarizeBy: none
+		sourceColumn: Payment_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Payment_Method
+		dataType: string
+		lineageTag: 3d0bbf3d-2518-4b23-aed8-703dd82fab8f
+		summarizeBy: none
+		sourceColumn: Payment_Method
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_payment = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\chaun\Desktop\Road to DA\Power BI CLASS\Data Source\Voltex_Data_01.04.2024 to 30.09.2024 (1)\dim_payment.csv"),[Delimiter=",", Columns=2, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}, {"Column2", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"Payment_ID", type text}, {"Payment_Method", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

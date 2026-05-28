@@ -1,0 +1,89 @@
+table *Customer_Measure
+	lineageTag: 638c376e-aee2-432f-baaa-23d16de2e442
+
+	measure 'Avg Revenue per Customer' =
+			
+			DIVIDE([M_revenue],[M_total customers])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: f0f0b4bc-d0f1-4a6a-95d9-d2d0b440c05a
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Repeat Customers' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(fact_order[Customer_ID]),
+			    FILTER(
+			        VALUES(fact_order[Customer_ID]),
+			        CALCULATE(COUNT(fact_order[Order_ID])) > 1
+			    )
+			)
+		formatString: 0
+		lineageTag: 4c93c0d1-cacf-4567-9df7-8872d0af0a8e
+
+	measure 'Avg Orders per Customer' =
+			
+			DIVIDE(
+			    [M_orders],
+			    [M_total customers])
+		lineageTag: c1249858-2ede-4478-893a-72658ceccd0e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Promoters' =
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNT(fact_order[Feedback_Rating]),
+			        fact_order[Feedback_Rating] = 5
+			    ),
+			    COUNT(fact_order[Feedback_Rating])
+			)
+		lineageTag: 4e75c905-d869-47f4-9b85-3fb6f1db02e7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Detractors' =
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNT(fact_order[Feedback_Rating]),
+			        fact_order[Feedback_Rating] <= 3
+			    ),
+			    COUNT(fact_order[Feedback_Rating])
+			)
+		formatString: 0.0
+		lineageTag: bbd7a77c-bc8c-4263-b9e9-df76e7f74882
+
+	measure NPS =
+			
+			([% Promoters] - [% Detractors]) * 100
+		formatString: 0.0
+		lineageTag: 6b4b7230-330b-4311-898c-ba76e8cc98bd
+
+	measure 'Revenue Contribution %' =
+			
+			DIVIDE(
+			    [M_revenue],
+			    CALCULATE([M_revenue], ALL('dim_product'[Product_Category]))
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: f6ce4358-395f-4891-92c1-27b5eaea6795
+
+	column Column
+		formatString: 0
+		lineageTag: f8b44ec4-c65b-4c9d-aa5c-869c71d1b992
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition *Customer_Measure = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 3392d6c8a6714d5a9507e893604f02bc
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

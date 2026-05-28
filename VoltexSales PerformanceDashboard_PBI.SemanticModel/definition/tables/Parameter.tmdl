@@ -1,0 +1,53 @@
+table Parameter
+	lineageTag: 38a0d533-5a8c-402f-b9fe-6dfdea68f262
+
+	column Parameter
+		lineageTag: 825e5d15-6366-4c74-a20b-471b4aada780
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: 3d10727a-2e11-4999-bbb3-a898ce9ad896
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 19b78f00-8613-41e5-8092-e2b1f99b80cf
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Parameter = calculated
+		mode: import
+		source =
+				{
+				    ("Product_Brand", NAMEOF('dim_product'[Product_Brand]), 0),
+				    ("Product_Category", NAMEOF('dim_product'[Product_Category]), 1),
+				    ("M_UnitSold", NAMEOF('*Product_Measure'[M_UnitSold]), 2),
+				    ("M_revenue", NAMEOF('*Measure table'[M_revenue]), 3),
+				    ("M_profit margin", NAMEOF('*Measure table'[M_profit margin]), 4),
+				    ("M_refund rate", NAMEOF('*Measure table'[M_refund rate]), 5),
+				    ("M_AverageRating", NAMEOF('*Product_Measure'[M_AverageRating]), 6)
+				}
+
+	annotation PBI_Id = 76dfb5f54c964f31bce5523bc7f7910c
+

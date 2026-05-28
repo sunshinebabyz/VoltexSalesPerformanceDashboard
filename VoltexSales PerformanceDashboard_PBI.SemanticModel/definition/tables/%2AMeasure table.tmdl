@@ -1,0 +1,164 @@
+table '*Measure table'
+	lineageTag: bb18864f-72ec-4a4a-81ef-329779edc844
+
+	measure M_revenue = ```
+			SUMX(
+			    fact_order, 
+			    IF(fact_order[OrderStatus] = "completed", fact_order[Quantity] * RELATED(dim_product[Product_UnitPrice]) - fact_order[Order_Discount],0))
+			```
+		formatString: #,0
+		lineageTag: 1e4835c5-3ac4-478c-a7a2-15922d69c6d0
+
+	measure M_cost = ```
+			SUMX(fact_order, 
+			IF(fact_order[OrderStatus] = "completed", fact_order[Order_OpEx] + fact_order[Quantity] * RELATED(dim_product[Product_UnitCOGS]), fact_order[Order_ReturnCost] + fact_order[Order_OpEx])
+			)
+			```
+		formatString: #,0
+		lineageTag: ec76f166-609b-46c6-be49-dc99ae89095b
+
+	measure M_profit = [M_revenue] - [M_cost]
+		lineageTag: bc547650-9405-4255-bbe1-ae56d5b6825d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'M_profit margin' = DIVIDE([M_profit], [M_revenue])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: f0af1fbe-1170-4ed6-862f-c56454dc0f90
+
+	measure 'M_refunded orders' = CALCULATE(COUNT(fact_order[Order_ID]), fact_order[OrderStatus] = "refunded")
+		formatString: 0
+		lineageTag: f752f51f-b72f-4d9c-b1e1-eb41ef816172
+
+	measure 'M_refund rate' = DIVIDE( [M_refunded orders], [M_orders])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: a0b9f2ee-b6b5-48ab-889b-64a76d15c205
+
+	measure M_orders = COUNT(fact_order[Order_ID])
+		formatString: 0
+		lineageTag: b0bc22f9-148d-4ef1-9c32-d5fe2d60b3d0
+
+	measure 'M_total customers' = DISTINCTCOUNT(fact_order[Customer_ID])
+		formatString: 0
+		lineageTag: e3a229ae-a856-45dc-9e6e-71d4750774f0
+
+	measure M_COGS = SUMX(fact_order, fact_order[Quantity] * RELATED(dim_product[Product_UnitCOGS]))
+		lineageTag: a1c88629-cdf9-420d-b228-96bbe097031a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure M_Profit_YTD = CALCULATE([M_profit], DATESYTD(dim_calendar[Date]))
+		lineageTag: 7604849f-b0d2-4a4c-a09c-8c7a3aaabcb9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure M_Previousmonth_Profit = CALCULATE([M_profit], PREVIOUSMONTH(dim_calendar[Date]))
+		lineageTag: e9ba52d1-dc3e-4d69-be27-759b522210ff
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure MOM_profit = DIVIDE([M_profit] - [M_Previousmonth_Profit], [M_Previousmonth_Profit])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 6943a7f4-df0b-41f9-b575-b6fb86f5a4bb
+
+	measure M_Opex = SUM(fact_order[Order_OpEx])
+		lineageTag: d35ddc18-0a12-423a-816b-17fdb932207c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure M_refunded_cost = SUM(fact_order[Order_ReturnCost])
+		lineageTag: 41c5c1ee-f20b-42de-ae9a-627ab8898f10
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure M_Yearly_profit = CALCULATE([M_revenue] - [M_cost], ALL(dim_calendar))
+		lineageTag: a204dd00-3350-497a-bc8c-c7e08da52ac0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure M_%_profit = DIVIDE([M_profit], CALCULATE([M_revenue] - [M_cost], ALL(dim_calendar)))
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 2f8da88f-9d0a-4b87-a25d-ea88ee7f97ef
+
+	measure MOM_avg_orders_per_customer_kpi =
+			
+			-- bước 1: xác định current và previous month
+			VAR current_month = MAX(dim_calendar[Date])
+			VAR previous_month = EOMONTH(current_month, -1)
+			
+			-- bước 2: Avg Orders per Customer từng tháng
+			VAR avg_orders_current =
+			    CALCULATE(
+			        [Avg Orders per Customer],
+			        FILTER(
+			            dim_calendar,
+			            dim_calendar[Year] = YEAR(current_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(current_month)
+			        )
+			    )
+			
+			VAR avg_orders_pre =
+			    CALCULATE(
+			        [Avg Orders per Customer],
+			        FILTER(
+			            ALL(dim_calendar),
+			            dim_calendar[Year] = YEAR(previous_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(previous_month)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(avg_orders_current - avg_orders_pre, avg_orders_pre)
+		lineageTag: be9fd377-bf4d-4bdc-bb21-2b69e02e392d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure MOM_nps_kpi =
+			
+			-- bước 1: xác định current và previous month
+			VAR current_month = MAX(dim_calendar[Date])
+			VAR previous_month = EOMONTH(current_month, -1)
+			
+			-- bước 2: NPS từng tháng
+			VAR nps_current =
+			    CALCULATE(
+			        [NPS],
+			        FILTER(
+			            dim_calendar,
+			            dim_calendar[Year] = YEAR(current_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(current_month)
+			        )
+			    )
+			
+			VAR nps_pre =
+			    CALCULATE(
+			        [NPS],
+			        FILTER(
+			            ALL(dim_calendar),
+			            dim_calendar[Year] = YEAR(previous_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(previous_month)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(nps_current - nps_pre, nps_pre)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: eba185a9-97ff-4a8d-829d-066444bdbc60
+
+	column Column
+		formatString: 0
+		lineageTag: a8f00b06-4ecf-4aba-ab4c-d4fc6229ad7e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '*Measure table' = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = a049c99a480a41e6aa07da68ace6a3d2
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

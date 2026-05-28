@@ -1,0 +1,47 @@
+table 'Parameter 3'
+	lineageTag: 943ca414-0bda-41c8-a4ed-bda7e7d3cad2
+
+	column Parameter
+		lineageTag: 07b95690-62de-4754-af57-1393c5529e01
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: 9b6e9ac7-22b5-4926-9c4d-48c989766c72
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 633b69d6-eca5-465e-bd31-271012f7755c
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Parameter 3' = calculated
+		mode: import
+		source =
+				{
+				    ("Pareto % (Return Cost by State)", NAMEOF('*OPs_Measure'[Pareto % (Return Cost by State)]), 0)
+				}
+
+	annotation PBI_Id = 9f612608728142cfb24d0f9ac86faf64
+

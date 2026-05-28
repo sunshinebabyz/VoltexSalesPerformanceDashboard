@@ -1,0 +1,43 @@
+table dim_customer
+	lineageTag: 4e4cbba5-dbe3-411e-96a4-601d591ab8ea
+
+	column Customer_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: a91ba422-4c73-4c60-8e6c-cee4c17de760
+		summarizeBy: none
+		sourceColumn: Customer_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_Age
+		dataType: int64
+		formatString: 0
+		lineageTag: e023ae60-6810-48ad-b07a-f19fdb571758
+		summarizeBy: none
+		sourceColumn: Customer_Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_Gender
+		dataType: string
+		lineageTag: 91869267-4479-40e2-9814-c10fcabfff07
+		summarizeBy: none
+		sourceColumn: Customer_Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_customer = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\chaun\Desktop\Road to DA\Power BI CLASS\Data Source\Voltex_Data_01.04.2024 to 30.09.2024 (1)\dim_customer.csv"),[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Customer_ID", Int64.Type}, {"Customer_Age", Int64.Type}, {"Customer_Gender", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

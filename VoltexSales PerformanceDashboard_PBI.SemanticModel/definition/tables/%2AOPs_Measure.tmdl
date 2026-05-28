@@ -1,0 +1,99 @@
+table *OPs_Measure
+	lineageTag: 2a78ed74-133a-4865-a590-916be3a68f9d
+
+	measure M_OTD_Rate = ```
+			
+			VAR TotalOrders = COUNTROWS('fact_order')
+			VAR OnTimeOrders = 
+			    CALCULATE(
+			        COUNTROWS('fact_order'), 
+			        'fact_order'[Delivery_Status] = "On-Time"
+			    )
+			RETURN
+			    DIVIDE(OnTimeOrders, TotalOrders, 0)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 8d162081-0200-4bcd-9fb5-c22bfd14babc
+
+	measure 'M_Avg Delivery Days' =
+			
+			AVERAGEX(
+			    'fact_order',
+			    DATEDIFF('fact_order'[Order_DateTime], 'fact_order'[Delivery_ActualDateTime], DAY)
+			)
+		lineageTag: 2e652424-5c04-45b4-8d97-2766c4e915f0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'M_Warehouse Processing Hours' =
+			
+			AVERAGEX(
+			    'fact_order',
+			    DATEDIFF('fact_order'[Order_ConfirmedDateTime], 'fact_order'[Shipping_PickupDateTime], HOUR)
+			)
+		lineageTag: 3e503e84-8b93-4b48-bfac-c050babaa620
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'M_OpEx per Order' = AVERAGE('fact_order'[Order_OpEx])
+		lineageTag: 31f83b06-3a01-4c96-85ff-75825878557f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Pareto % (Return Cost by State)' = ```
+			
+			IF (
+			    ISINSCOPE(dim_region[Region_State]),
+			    VAR selectedStates = ALLSELECTED(dim_region[Region_State])
+			    VAR costByState = 
+			        ADDCOLUMNS(
+			            selectedStates,
+			            "@Cost", 
+			           [M_refunded_cost]
+			        )
+			    VAR currentReturnCost = [M_refunded_cost]
+			    VAR filteredHigherCost = 
+			        FILTER(
+			            costByState, 
+			            [@Cost] >= currentReturnCost
+			        )
+			    VAR cumulativeReturnCost = SUMX(filteredHigherCost, [@Cost])
+			    VAR totalSelectedReturnCost = 
+			        CALCULATE(
+			            [M_refunded_cost], 
+			            selectedStates
+			        )
+			    VAR paretoPercentage = DIVIDE(cumulativeReturnCost, totalSelectedReturnCost)
+			    RETURN paretoPercentage
+			)
+			```
+		lineageTag: 12c8e174-2458-4aa3-87e8-9230a2d5b647
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Pareto CF' =
+			
+			IF(
+			    [Pareto % (Return Cost by State)] <= 'Pareto threshold'[Pareto threshold Value],
+			    "#209FBD",      -- Màu Xanh lam sáng: Trong ngưỡng Pareto (Nhóm Top)
+			    "#CCCCCC"       -- Màu Xám: Ngoài ngưỡng Pareto (Nhóm Others)
+			)
+		lineageTag: b30bd3f2-0df4-4b9d-9c01-1057bb0790a6
+
+	column Column
+		formatString: 0
+		lineageTag: f95a3c69-b890-42a8-ad4f-1b318adf6409
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition *OPs_Measure = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = b56f3fa025da4bcaa5c0c207a5889ca6
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

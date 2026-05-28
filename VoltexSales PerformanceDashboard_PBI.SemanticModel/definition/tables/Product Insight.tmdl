@@ -1,0 +1,51 @@
+table 'Product Insight'
+	lineageTag: 59ddab67-8a0f-4707-a79a-7226b1a4b862
+
+	column 'Product Insight'
+		lineageTag: 49775ba7-24d9-4f90-8c63-fe711511630b
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Product Insight Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Product Insight Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Insight Fields'
+		isHidden
+		lineageTag: 08c83365-bc63-4c98-ab49-a5b8ebb38095
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Product Insight Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Insight Order'
+		isHidden
+		formatString: 0
+		lineageTag: c2163ebc-d0fd-4093-947f-3f463e04468f
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Product Insight' = calculated
+		mode: import
+		source =
+				{
+				    ("Revenue Contribution %", NAMEOF('*Customer_Measure'[Revenue Contribution %]), 0),
+				    ("M_refund rate", NAMEOF('*Measure table'[M_refund rate]), 1),
+				    ("M_UnitSold", NAMEOF('*Product_Measure'[M_UnitSold]), 2),
+				    ("M_profit margin", NAMEOF('*Measure table'[M_profit margin]), 3),
+				    ("M_AverageRating", NAMEOF('*Product_Measure'[M_AverageRating]), 4)
+				}
+
+	annotation PBI_Id = 5d2453e67ac3453caa0c7e90ba804fe9
+

@@ -1,0 +1,76 @@
+table dim_product
+	lineageTag: 744fbe85-967d-451d-88ee-0da95e8f7531
+
+	column Product_ID
+		dataType: string
+		lineageTag: 6a18689f-6958-4131-9dc8-26272f603a8a
+		summarizeBy: none
+		sourceColumn: Product_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Name
+		dataType: string
+		lineageTag: a108449a-905a-4a5e-a58c-cd170d6d7759
+		summarizeBy: none
+		sourceColumn: Product_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Category
+		dataType: string
+		lineageTag: 36d11342-a247-4ae1-86fc-91f99f27ecb1
+		summarizeBy: none
+		sourceColumn: Product_Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Brand
+		dataType: string
+		lineageTag: 2171fc13-d946-48ed-975c-1eddede04897
+		summarizeBy: none
+		sourceColumn: Product_Brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_ValueTier
+		dataType: string
+		lineageTag: 41611d81-c17c-4917-b47f-7ad1f55015e7
+		summarizeBy: none
+		sourceColumn: Product_ValueTier
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_UnitPrice
+		dataType: int64
+		formatString: 0
+		lineageTag: ed5fd03e-583b-405f-b146-970273e75488
+		summarizeBy: none
+		sourceColumn: Product_UnitPrice
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_UnitCOGS
+		dataType: double
+		lineageTag: caba9236-a953-4f0f-a74d-c335fa5f72bd
+		summarizeBy: none
+		sourceColumn: Product_UnitCOGS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition dim_product = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\chaun\Desktop\Road to DA\Power BI CLASS\Data Source\Voltex_Data_01.04.2024 to 30.09.2024 (1)\dim_product.csv"),[Delimiter=",", Columns=7, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Product_ID", type text}, {"Product_Name", type text}, {"Product_Category", type text}, {"Product_Brand", type text}, {"Product_ValueTier", type text}, {"Product_UnitPrice", Int64.Type}, {"Product_UnitCOGS", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

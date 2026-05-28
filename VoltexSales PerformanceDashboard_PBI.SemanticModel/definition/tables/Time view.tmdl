@@ -1,0 +1,48 @@
+table 'Time view'
+	lineageTag: 00b44dd8-1e9d-46fe-9ec9-62e460b90f9a
+
+	column 'Time view'
+		lineageTag: db4faa54-e283-41b7-8995-fb1074f62a86
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Time view Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Time view Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Time view Fields'
+		isHidden
+		lineageTag: e907c79d-fe63-4797-8164-f659462b85d4
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Time view Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Time view Order'
+		isHidden
+		formatString: 0
+		lineageTag: 69235b09-9a85-4d9a-b213-9c9e00c8eabc
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Time view' = calculated
+		mode: import
+		source =
+				{
+				    ("Daily", NAMEOF('dim_calendar'[Date]), 0),
+				    ("Monthly", NAMEOF('dim_calendar'[StartOfMonth]), 1)
+				}
+
+	annotation PBI_Id = 4fe573b1048c42d4996cc1c1b828e11a
+

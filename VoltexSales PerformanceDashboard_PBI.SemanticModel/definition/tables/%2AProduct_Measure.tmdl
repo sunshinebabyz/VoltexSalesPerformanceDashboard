@@ -1,0 +1,29 @@
+table *Product_Measure
+	lineageTag: 7a03bd11-01b5-4c34-b533-fafb020a1b50
+
+	measure M_UnitSold = SUM(fact_order[Quantity])
+		formatString: 0
+		lineageTag: 1e17e418-881d-4940-a504-67f1b7166ed1
+
+	measure M_AverageRating = AVERAGE(fact_order[Feedback_Rating])
+		lineageTag: 6e567010-9344-40ca-9e34-7460fe0890cb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column
+		formatString: 0
+		lineageTag: 146ae965-d602-47f7-b4b3-f7f12477d916
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition *Product_Measure = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 897b953ebde5420da681bde5578e72da
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

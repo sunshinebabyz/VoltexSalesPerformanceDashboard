@@ -1,0 +1,282 @@
+function MoM_Perc =
+		( _measure : expr ) =>
+		VAR MaxD = MAX(dim_calendar[Date])
+		VAR CM1  = DATE(YEAR(MaxD), MONTH(MaxD), 1)
+		VAR CM2  = EOMONTH(MaxD, 0)
+		VAR PM1  = EOMONTH(MaxD, -2) + 1
+		VAR PM2  = EOMONTH(MaxD, -1)
+		VAR CM   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim calendar[Date] >= CM1 && dim_calendar[Date] <= CM2))
+		VAR PM   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= PM1 && dim_calendar[Date] <= PM2))
+		RETURN DIVIDE(CM - PM, PM, BLANK())
+	lineageTag: 4ed93d5d-9937-4712-b11b-35e4b9a07360
+
+function MoM_Icon =
+		( _measure : expr ) =>
+		VAR MaxD = MAX(dim_calendar[Date])
+		VAR CM1  = DATE(YEAR(MaxD), MONTH(MaxD), 1)
+		VAR CM2  = EOMONTH(MaxD, 0)
+		VAR PM1  = EOMONTH(MaxD, -2) + 1
+		VAR PM2  = EOMONTH(MaxD, -1)
+		VAR CM   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= CM1 && dim_calendar[Date] <= CM2))
+		VAR PM   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= PM1 && dim_calendar[Date] <= PM2))
+		VAR d    = DIVIDE(CM - PM, PM, BLANK())
+		VAR Up   = UNICHAR(9650)
+		VAR Down = UNICHAR(9660)
+		RETURN IF(ISBLANK(d), "–", IF(d >= 0, Up, Down) & " " & FORMAT(ABS(d), "0.0%"))
+	lineageTag: 992bf630-7369-44c7-8e3f-8d9b562af4e3
+
+function YoY_Perc =
+		( _measure : expr ) =>
+		VAR MaxD = MAX(dim_calendar[Date])
+		VAR CY1  = DATE(YEAR(MaxD), MONTH(MaxD), 1)
+		VAR CY2  = EOMONTH(MaxD, 0)
+		VAR PY1  = EDATE(CY1, -12)
+		VAR PY2  = EOMONTH(PY1, 0)
+		VAR CY   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= CY1 && dim_calendar[Date] <= CY2))
+		VAR PY   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= PY1 && dim_calendar[Date] <= PY2))
+		RETURN DIVIDE(CY - PY, PY, BLANK())
+	lineageTag: a92ab82b-7a2c-4f57-8d95-1f5a6eeb1afc
+
+function YoY_Icon =
+		( _measure : expr ) =>
+		VAR MaxD = MAX(dim_calendar[Date])
+		VAR CY1  = DATE(YEAR(MaxD), MONTH(MaxD), 1)
+		VAR CY2  = EOMONTH(MaxD, 0)
+		VAR PY1  = EDATE(CY1, -12)
+		VAR PY2  = EOMONTH(PY1, 0)
+		VAR CY   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= CY1 && dim_calendar[Date] <= CY2))
+		VAR PY   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= PY1 && dim_calendar[Date] <= PY2))
+		VAR d    = DIVIDE(CY - PY, PY, BLANK())
+		VAR Up   = UNICHAR(9650)
+		VAR Down = UNICHAR(9660)
+		RETURN IF(ISBLANK(d), "–", IF(d >= 0, Up, Down) & " " & FORMAT(ABS(d), "0.0%"))
+	lineageTag: d25db4fe-4187-460a-a687-33ef78d523e3
+
+function PoP_Perc =
+		( _measure : expr ) =>
+		VAR _StartDate = MIN('dim_calendar'[Date])
+		VAR _EndDate   = MAX('dim_calendar'[Date])
+		VAR _PeriodLen = DATEDIFF(_StartDate, _EndDate, DAY) + 1
+		VAR _PrevStart = _StartDate - _PeriodLen
+		VAR _PrevEnd   = _StartDate - 1
+		VAR _CurrVal =
+		    CALCULATE(
+		        _measure,
+		        FILTER(ALL('dim_calendar'),
+		            'dim_calendar'[Date] >= _StartDate &&
+		            'dim_calendar'[Date] <= _EndDate
+		        )
+		    )
+		VAR _PrevVal =
+		    CALCULATE(
+		        _measure,
+		        FILTER(ALL('dim_calendar'),
+		            'dim_calendar'[Date] >= _PrevStart &&
+		            'dim_calendar'[Date] <= _PrevEnd
+		        )
+		    )
+		RETURN DIVIDE(_CurrVal - _PrevVal, _PrevVal, BLANK())
+	lineageTag: 018c3f0d-0cfd-444a-abd3-07b71fd5ba86
+
+function PoP_Icon =
+		( _measure : expr ) =>
+		VAR _StartDate = MIN('dim_calendar'[Date])
+		VAR _EndDate   = MAX('dim_calendar'[Date])
+		VAR _PeriodLen = DATEDIFF(_StartDate, _EndDate, DAY) + 1
+		VAR _PrevStart = _StartDate - _PeriodLen
+		VAR _PrevEnd   = _StartDate - 1
+		VAR _CurrVal =
+		    CALCULATE(
+		        _measure,
+		        FILTER(ALL('dim_calendar'),
+		            'dim_calendar'[Date] >= _StartDate &&
+		            'dim_calendar'[Date] <= _EndDate
+		        )
+		    )
+		VAR _PrevVal =
+		    CALCULATE(
+		        _measure,
+		        FILTER(ALL('dim_calendar'),
+		            'dim_calendar'[Date] >= _PrevStart &&
+		            'dim_calendar'[Date] <= _PrevEnd
+		        )
+		    )
+		VAR d    = DIVIDE(_CurrVal - _PrevVal, _PrevVal, BLANK())
+		VAR Up   = UNICHAR(9650)
+		VAR Down = UNICHAR(9660)
+		RETURN IF(ISBLANK(d), "–", IF(d >= 0, Up, Down) & " " & FORMAT(ABS(d), "0.0%"))
+	lineageTag: 3d084816-558e-4a57-aa94-eecdff1d4c69
+
+function Delta_Color =
+		( _value : expr ) =>
+		VAR IsText    = NOT ISNONTEXT(_value)
+		VAR HasUp     = IsText && CONTAINSSTRING(_value, "▲")
+		VAR HasDown   = IsText && CONTAINSSTRING(_value, "▼")
+		VAR Cleaned1  = IF(IsText, SUBSTITUTE(SUBSTITUTE(_value, "▲", ""), "▼", ""), _value)
+		VAR Cleaned2  = IF(IsText, SUBSTITUTE(Cleaned1, "%", ""), Cleaned1)
+		VAR NumRaw    = IF(ISBLANK(_value), BLANK(), IF(IsText, DIVIDE(VALUE(Cleaned2), 100), _value))
+		VAR NumSigned = IF(IsText && (HasUp || HasDown), IF(HasDown, -ABS(NumRaw), ABS(NumRaw)), NumRaw)
+		RETURN
+		    SWITCH(
+		        TRUE(),
+		        ISBLANK(NumSigned), "#B0B0B0",
+		        NumSigned > 0,      "#54DFBF",
+		        NumSigned < 0,      "#EB704A",
+		                            "#5A5A5A"
+		    )
+	lineageTag: 972df2df-e9e3-4cde-9a7e-4d2a04b0f2ac
+
+function Delta_Color_Inverse =
+		( _value : expr ) =>
+		VAR IsText    = NOT ISNONTEXT(_value)
+		VAR HasUp     = IsText && CONTAINSSTRING(_value, "▲")
+		VAR HasDown   = IsText && CONTAINSSTRING(_value, "▼")
+		VAR Cleaned1  = IF(IsText, SUBSTITUTE(SUBSTITUTE(_value, "▲", ""), "▼", ""), _value)
+		VAR Cleaned2  = IF(IsText, SUBSTITUTE(Cleaned1, "%", ""), Cleaned1)
+		VAR NumRaw    = IF(ISBLANK(_value), BLANK(), IF(IsText, DIVIDE(VALUE(Cleaned2), 100), _value))
+		VAR NumSigned = IF(IsText && (HasUp || HasDown), IF(HasDown, -ABS(NumRaw), ABS(NumRaw)), NumRaw)
+		RETURN
+		    SWITCH(
+		        TRUE(),
+		        ISBLANK(NumSigned), "#B0B0B0",
+		        NumSigned > 0,      "#EB704A",
+		        NumSigned < 0,      "#54DFBF",
+		                            "#5A5A5A"
+		    )
+	lineageTag: fbb24b5b-82ac-47cb-9384-b450c335ff4b
+
+function MoM_MTD_Perc =
+		( _measure : expr ) =>
+		VAR CM_MTD = CALCULATE( _measure, DATESMTD( dim_calendar[Date] ) )
+		VAR PM_MTD = CALCULATE( _measure, DATEADD( DATESMTD( dim_calendar[Date] ), -1, MONTH ) )
+		RETURN DIVIDE( CM_MTD - PM_MTD, PM_MTD, BLANK() )
+	lineageTag: 211636a4-554a-4847-ad5e-3ddad91fffdb
+
+function MoM_MTD_Icon =
+		( _measure : expr ) =>
+		VAR CM_MTD = CALCULATE( _measure, DATESMTD( dim_calendar[Date] ) )
+		VAR PM_MTD = CALCULATE( _measure, DATEADD( DATESMTD( dim_calendar[Date] ), -1, MONTH ) )
+		VAR d      = DIVIDE( CM_MTD - PM_MTD, PM_MTD, BLANK() )
+		VAR Up     = UNICHAR(9650)
+		VAR Dw     = UNICHAR(9660)
+		RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )
+	lineageTag: cd9188ed-c473-4a0b-bf91-d54791408b8c
+
+function YoY_MTD_Perc =
+		( _measure : expr ) =>
+		VAR CY_MTD = CALCULATE( _measure, DATESMTD( dim_calendar[Date] ) )
+		VAR PY_MTD = CALCULATE( _measure, SAMEPERIODLASTYEAR( DATESMTD( dim_calendar[Date] ) ) )
+		RETURN DIVIDE( CY_MTD - PY_MTD, PY_MTD, BLANK() )
+	lineageTag: 8a65687d-9c6d-4b32-a7c0-875d109bd505
+
+function YoY_MTD_Icon =
+		( _measure : expr ) =>
+		VAR CY_MTD = CALCULATE( _measure, DATESMTD( dim_calendar[Date] ) )
+		VAR PY_MTD = CALCULATE( _measure, SAMEPERIODLASTYEAR( DATESMTD( dim_calendar[Date] ) ) )
+		VAR d      = DIVIDE( CY_MTD - PY_MTD, PY_MTD, BLANK() )
+		VAR Up     = UNICHAR(9650)
+		VAR Dw     = UNICHAR(9660)
+		RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )
+	lineageTag: 8cd8ed48-c661-4fed-9264-61a23ddd9ff7
+
+function QoQ_Perc =
+		( _measure : expr ) =>
+		VAR CQ = CALCULATE( _measure, DATESQTD( dim_calendar[Date] ) )
+		VAR PQ = CALCULATE( _measure, DATEADD( DATESQTD( dim_calendar[Date] ), -1, QUARTER ) )
+		RETURN DIVIDE( CQ - PQ, PQ, BLANK() )
+	lineageTag: abf05b42-b7ec-4a82-a662-6cc54ba3c1e0
+
+function QoQ_Icon =
+		( _measure : expr ) =>
+		VAR CQ = CALCULATE( _measure, DATESQTD( dim_calendar[Date] ) )
+		VAR PQ = CALCULATE( _measure, DATEADD( DATESQTD( dim_calendar[Date] ), -1, QUARTER ) )
+		VAR d  = DIVIDE( CQ - PQ, PQ, BLANK() )
+		VAR Up = UNICHAR(9650)
+		VAR Dw = UNICHAR(9660)
+		RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )
+	lineageTag: aafbdeb5-3928-4d32-93a6-0554c3004faf
+
+function YTD_Perc =
+		( _measure : expr ) =>
+		VAR CYTD = CALCULATE( _measure, DATESYTD( dim_calendar[Date] ) )
+		VAR PYTD = CALCULATE( _measure, DATEADD( DATESYTD( dim_calendar[Date] ), -1, YEAR ) )
+		RETURN DIVIDE( CYTD - PYTD, PYTD, BLANK() )
+	lineageTag: 215232e1-e082-4f31-b4bf-3a1ad99988b0
+
+function YTD_Icon =
+		( _measure : expr ) =>
+		VAR CYTD = CALCULATE( _measure, DATESYTD( dim_calendar[Date] ) )
+		VAR PYTD = CALCULATE( _measure, DATEADD( DATESYTD( dim_calendar[Date] ), -1, YEAR ) )
+		VAR d    = DIVIDE( CYTD - PYTD, PYTD, BLANK() )
+		VAR Up   = UNICHAR(9650)
+		VAR Dw   = UNICHAR(9660)
+		RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )
+	lineageTag: a4f1f7c7-8a2e-452a-94bb-5b47e3d14bca
+
+function YoY_YTD_Perc =
+		( _measure : expr ) =>
+		VAR CYTD = CALCULATE( _measure, DATESYTD( dim_calendar[Date] ) )
+		VAR PYTD = CALCULATE( _measure, SAMEPERIODLASTYEAR( DATESYTD( dim_calendar[Date] ) ) )
+		RETURN DIVIDE( CYTD - PYTD, PYTD, BLANK() )
+	lineageTag: 645b92d9-1b2a-44c6-b2c9-589b85a78839
+
+function YoY_YTD_Icon =
+		( _measure : expr ) =>
+		VAR CYTD = CALCULATE( _measure, DATESYTD( dim_calendar[Date] ) )
+		VAR PYTD = CALCULATE( _measure, SAMEPERIODLASTYEAR( DATESYTD( dim_calendar[Date] ) ) )
+		VAR d    = DIVIDE( CYTD - PYTD, PYTD, BLANK() )
+		VAR Up   = UNICHAR(9650)
+		VAR Dw   = UNICHAR(9660)
+		RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )
+	lineageTag: bf32e07f-1f28-4e22-b4c0-c1d6e3c4ce11
+
+function WoW_Perc =
+		( _measure : expr ) =>
+		VAR CurrWeek =
+		    CALCULATE(
+		        _measure,
+		        DATESINPERIOD( dim_calendar[Date], MAX( dim_calendar[Date] ), WEEK, 1 )
+		    )
+		VAR PrevWeek =
+		    CALCULATE(
+		        _measure,
+		        DATEADD( DATESINPERIOD( dim_calendar[Date], MAX( dim_calendar[Date] ), WEEK, 1 ), -1, WEEK )
+		    )
+		RETURN DIVIDE( CurrWeek - PrevWeek, PrevWeek, BLANK() )
+	lineageTag: 19d3187d-ed7f-4b8c-b5dc-68e3f4dabca1
+
+function WoW_Icon =
+		( _measure : expr ) =>
+		VAR CurrWeek =
+		    CALCULATE(
+		        _measure,
+		        DATESINPERIOD( dim_calendar[Date], MAX( dim_calendar[Date] ), WEEK, 1 )
+		    )
+		VAR PrevWeek =
+		    CALCULATE(
+		        _measure,
+		        DATEADD( DATESINPERIOD( dim_calendar[Date], MAX( dim_calendar[Date] ), WEEK, 1 ), -1, WEEK )
+		    )
+		VAR d    = DIVIDE( CurrWeek - PrevWeek, PrevWeek, BLANK() )
+		VAR Up   = UNICHAR(9650)
+		VAR Dw   = UNICHAR(9660)
+		RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )
+	lineageTag: d916b5c9-e3d6-4838-a0d0-8295566eedf7
+
+function DoD_Perc =
+		( _measure : expr ) =>
+		VAR CD = CALCULATE( _measure, LASTDATE( dim_calendar[Date] ) )
+		VAR PD = CALCULATE( _measure, DATEADD( dim_calendar[Date], -1, DAY ) )
+		RETURN DIVIDE( CD - PD, PD, BLANK() )
+	lineageTag: 17727f86-28d8-4ab4-91ba-42e4e67c1eb0
+
+function DoD_Icon =
+		( _measure : expr ) =>
+		VAR CD = CALCULATE( _measure, LASTDATE( dim_calendar[Date] ) )
+		VAR PD = CALCULATE( _measure, DATEADD( dim_calendar[Date], -1, DAY ) )
+		VAR d  = DIVIDE( CD - PD, PD, BLANK() )
+		VAR Up = UNICHAR(9650)
+		VAR Dw = UNICHAR(9660)
+		RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )
+	lineageTag: 928b523c-be83-45bf-8e1b-853ed2a25737
+

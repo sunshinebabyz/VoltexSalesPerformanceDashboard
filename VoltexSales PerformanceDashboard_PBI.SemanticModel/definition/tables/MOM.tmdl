@@ -1,0 +1,309 @@
+table MOM
+	lineageTag: 752bb1be-d130-468e-a794-c397bccac9cc
+
+	measure MOM_profit_kpi =
+			
+			-- bước 1: xác định current và previous month
+			VAR current_month = MAX(dim_calendar[Date])
+			VAR previous_month = EOMONTH(current_month, -1) -- trả về ngày cuối cùng tháng trước
+			
+			-- bước 2: Doanh thu cho từng biến trên
+			VAR revenue_current =
+			    CALCULATE(
+			        [M_profit],
+			        FILTER(
+			            dim_calendar,
+			            dim_calendar[Year] = YEAR(current_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(current_month)
+			        )
+			    )
+			
+			VAR revenue_pre =
+			    CALCULATE(
+			        [M_profit],
+			        FILTER(
+			            ALL(dim_calendar),
+			            dim_calendar[Year] = YEAR(previous_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(previous_month)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(revenue_current - revenue_pre, revenue_pre)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 9ad6e3ba-6e8a-4016-99b7-d9719ae469c8
+
+	measure MOM_revenue_kpi =
+			
+			-- bước 1: xác định current và previous month
+			VAR current_month = MAX(dim_calendar[Date])
+			VAR previous_month = EOMONTH(current_month, -1) -- trả về ngày cuối cùng tháng trước
+			
+			-- bước 2: Doanh thu cho từng biến trên
+			VAR revenue_current =
+			    CALCULATE(
+			        [M_revenue],
+			        FILTER(
+			            dim_calendar,
+			            dim_calendar[Year] = YEAR(current_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(current_month)
+			        )
+			    )
+			
+			VAR revenue_pre =
+			    CALCULATE(
+			        [M_revenue],
+			        FILTER(
+			            ALL(dim_calendar),
+			            dim_calendar[Year] = YEAR(previous_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(previous_month)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(revenue_current - revenue_pre, revenue_pre)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: fba48ba4-4667-4956-bf9a-aa8ce9099bf9
+
+	measure MOM_units_kpi =
+			
+			-- bước 1: xác định current và previous month
+			VAR current_month = MAX(dim_calendar[Date])
+			VAR previous_month = EOMONTH(current_month, -1) -- trả về ngày cuối cùng tháng trước
+			
+			-- bước 2: Units sold cho từng biến trên
+			VAR units_current =
+			    CALCULATE(
+			        [M_UnitSold],
+			        FILTER(
+			            dim_calendar,
+			            dim_calendar[Year] = YEAR(current_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(current_month)
+			        )
+			    )
+			
+			VAR units_pre =
+			    CALCULATE(
+			        [M_UnitSold],
+			        FILTER(
+			            ALL(dim_calendar),
+			            dim_calendar[Year] = YEAR(previous_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(previous_month)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(units_current - units_pre, units_pre)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 94856948-2838-46c9-b216-584ca4643d2b
+
+	measure MOM_profit_margin_kpi =
+			
+			-- bước 1: xác định current và previous month
+			VAR current_month = MAX(dim_calendar[Date])
+			VAR previous_month = EOMONTH(current_month, -1) -- trả về ngày cuối cùng tháng trước
+			
+			-- bước 2: Profit margin cho từng biến trên
+			VAR margin_current =
+			    CALCULATE(
+			        [M_profit margin],
+			        FILTER(
+			            dim_calendar,
+			            dim_calendar[Year] = YEAR(current_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(current_month)
+			        )
+			    )
+			
+			VAR margin_pre =
+			    CALCULATE(
+			        [M_profit margin],
+			        FILTER(
+			            ALL(dim_calendar),
+			            dim_calendar[Year] = YEAR(previous_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(previous_month)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(margin_current - margin_pre, margin_pre)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: ff1b8781-acec-459b-855e-b7af54b1f739
+
+	measure MOM_refund_rate_kpi =
+			
+			-- bước 1: xác định current và previous month
+			VAR current_month = MAX(dim_calendar[Date])
+			VAR previous_month = EOMONTH(current_month, -1)
+			
+			-- bước 2: Refund rate từng tháng
+			VAR refund_current =
+			    CALCULATE(
+			        [M_refund rate],
+			        FILTER(
+			            dim_calendar,
+			            dim_calendar[Year] = YEAR(current_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(current_month)
+			        )
+			    )
+			
+			VAR refund_pre =
+			    CALCULATE(
+			        [M_refund rate],
+			        FILTER(
+			            ALL(dim_calendar),
+			            dim_calendar[Year] = YEAR(previous_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(previous_month)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(refund_current - refund_pre, refund_pre)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: d0b69af5-e309-4b3b-b122-c65776bb75b8
+
+	measure MOM_avg_rating_kpi =
+			
+			-- bước 1: xác định current và previous month
+			VAR current_month = MAX(dim_calendar[Date])
+			VAR previous_month = EOMONTH(current_month, -1)
+			
+			-- bước 2: rating cho từng tháng
+			VAR rating_current =
+			    CALCULATE(
+			        [M_AverageRating],
+			        FILTER(
+			            dim_calendar,
+			            dim_calendar[Year] = YEAR(current_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(current_month)
+			        )
+			    )
+			
+			VAR rating_pre =
+			    CALCULATE(
+			        [M_AverageRating],
+			        FILTER(
+			            ALL(dim_calendar),
+			            dim_calendar[Year] = YEAR(previous_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(previous_month)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(rating_current - rating_pre, rating_pre)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: b1685b18-14a1-4bf5-a349-f42f9d1d1b7a
+
+	measure MOM_total_customers_kpi = ```
+			
+			-- bước 1: xác định current và previous month
+			VAR current_month = MAX(dim_calendar[Date])
+			VAR previous_month = EOMONTH(current_month, -1)
+			
+			-- bước 2: Customers từng tháng
+			VAR customers_current =
+			    CALCULATE(
+			        [M_total customers],
+			        FILTER(
+			            dim_calendar,
+			            dim_calendar[Year] = YEAR(current_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(current_month)
+			        )
+			    )
+			
+			VAR customers_pre =
+			    CALCULATE(
+			        [M_total customers],
+			        FILTER(
+			            ALL(dim_calendar),
+			            dim_calendar[Year] = YEAR(previous_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(previous_month)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(customers_current - customers_pre, customers_pre) 
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 41586325-9b94-471d-90dd-1b6a1958fa9e
+
+	measure MOM_avg_revenue_per_customer_kpi =
+			
+			-- bước 1: xác định current và previous month
+			VAR current_month = MAX(dim_calendar[Date])
+			VAR previous_month = EOMONTH(current_month, -1)
+			
+			-- bước 2: Avg Revenue per Customer từng tháng
+			VAR arpc_current =
+			    CALCULATE(
+			        [Avg Revenue per Customer],
+			        FILTER(
+			            dim_calendar,
+			            dim_calendar[Year] = YEAR(current_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(current_month)
+			        )
+			    )
+			
+			VAR arpc_pre =
+			    CALCULATE(
+			        [Avg Revenue per Customer],
+			        FILTER(
+			            ALL(dim_calendar),
+			            dim_calendar[Year] = YEAR(previous_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(previous_month)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(arpc_current - arpc_pre, arpc_pre)
+		formatString: #,0.00%;-#,0.00%;#,0.00%
+		lineageTag: 72d969fe-151b-41be-a57b-6ef1cdfda822
+
+	measure MOM_repeat_customer_rate_kpi =
+			
+			-- bước 1: xác định current và previous month
+			VAR current_month = MAX(dim_calendar[Date])
+			VAR previous_month = EOMONTH(current_month, -1)
+			
+			-- bước 2: Repeat Customer Rate từng tháng
+			VAR rate_current =
+			    CALCULATE(
+			        [Repeat Customers],
+			        FILTER(
+			            dim_calendar,
+			            dim_calendar[Year] = YEAR(current_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(current_month)
+			        )
+			    )
+			
+			VAR rate_pre =
+			    CALCULATE(
+			        [Repeat Customers],
+			        FILTER(
+			            ALL(dim_calendar),
+			            dim_calendar[Year] = YEAR(previous_month)
+			            && MONTH(dim_calendar[Date]) = MONTH(previous_month)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(rate_current - rate_pre, rate_pre)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 526a9c36-22f2-4e64-8a90-21616cb1b283
+
+	column Column
+		formatString: 0
+		lineageTag: 1a580c90-e423-41eb-bb0b-71167fd53ff5
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition MOM = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = e58e65ac5a8d4c7cbce907f82f55cbec
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

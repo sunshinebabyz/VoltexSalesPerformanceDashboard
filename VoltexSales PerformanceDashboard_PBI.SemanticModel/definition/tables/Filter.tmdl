@@ -1,0 +1,26 @@
+table Filter
+	lineageTag: c0b26418-6c62-4c8d-b001-4b0876fe67a0
+
+	measure 'Filter Value' = SELECTEDVALUE('Filter'[Filter], 10)
+		formatString: 0
+		lineageTag: 0b17f774-a716-483e-8a80-8c5c5b526239
+
+	column Filter
+		formatString: 0
+		lineageTag: 28627edd-2ee7-4b9c-977c-52938f9378ea
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition Filter = calculated
+		mode: import
+		source = GENERATESERIES(5, 20, 5)
+
+	annotation PBI_Id = d280e5436cb840c5bf58d5069011296e
+

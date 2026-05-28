@@ -1,0 +1,34 @@
+table dim_return
+	lineageTag: 231037cd-8d9b-451b-b4e8-037bb83dec72
+
+	column Return_ID
+		dataType: string
+		lineageTag: 72e83ab7-5f42-446e-bb34-fc4bf060f9be
+		summarizeBy: none
+		sourceColumn: Return_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Return_Reason
+		dataType: string
+		lineageTag: 4d8ab889-9091-41eb-ae26-ae8676f3a6d4
+		summarizeBy: none
+		sourceColumn: Return_Reason
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_return = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\chaun\Desktop\Road to DA\Power BI CLASS\Data Source\Voltex_Data_01.04.2024 to 30.09.2024 (1)\dim_return.csv"),[Delimiter=",", Columns=2, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}, {"Column2", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"Return_ID", type text}, {"Return_Reason", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

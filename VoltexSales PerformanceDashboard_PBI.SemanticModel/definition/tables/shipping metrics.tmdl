@@ -1,0 +1,50 @@
+table 'shipping metrics'
+	lineageTag: 021762a1-d32e-482a-9ff0-86a160ed0928
+
+	column 'shipping metrics'
+		lineageTag: 56b1130c-5f12-4bfb-beb9-275f3807d9a9
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'shipping metrics Order'
+
+		relatedColumnDetails
+			groupByColumn: 'shipping metrics Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'shipping metrics Fields'
+		isHidden
+		lineageTag: d1e9d85d-d1c7-457d-b66d-149b93d822f0
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'shipping metrics Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'shipping metrics Order'
+		isHidden
+		formatString: 0
+		lineageTag: 676d2999-a63a-42df-8ee7-0487cd7ccfe3
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'shipping metrics' = calculated
+		mode: import
+		source =
+				{
+				    ("OTD_Rate", NAMEOF('*OPs_Measure'[M_OTD_Rate]), 0),
+				    ("Avg Delivery Days", NAMEOF('*OPs_Measure'[M_Avg Delivery Days]), 1),
+				    ("Refund rate", NAMEOF('*Measure table'[M_refund rate]), 2),
+				    ("#Orders", NAMEOF('*Measure table'[M_orders]), 3)
+				}
+
+	annotation PBI_Id = 232ac7abe3d04ad28cfe8d7726205b4e
+

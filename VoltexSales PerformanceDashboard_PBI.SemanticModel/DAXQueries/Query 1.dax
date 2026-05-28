@@ -1,0 +1,287 @@
+// =========================
+// PERIOD DELTA TOOLKIT (FULL)
+// =========================
+
+// =========================
+// CORE: MoM / YoY / PoP
+// =========================
+
+// ----- MoM -----
+DEFINE
+FUNCTION MoM_Perc = ( _measure : expr ) =>
+VAR MaxD = MAX(dim_calendar[Date])
+VAR CM1  = DATE(YEAR(MaxD), MONTH(MaxD), 1)
+VAR CM2  = EOMONTH(MaxD, 0)
+VAR PM1  = EOMONTH(MaxD, -2) + 1
+VAR PM2  = EOMONTH(MaxD, -1)
+VAR CM   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim calendar[Date] >= CM1 && dim_calendar[Date] <= CM2))
+VAR PM   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= PM1 && dim_calendar[Date] <= PM2))
+RETURN DIVIDE(CM - PM, PM, BLANK())
+
+DEFINE
+FUNCTION MoM_Icon = ( _measure : expr ) =>
+VAR MaxD = MAX(dim_calendar[Date])
+VAR CM1  = DATE(YEAR(MaxD), MONTH(MaxD), 1)
+VAR CM2  = EOMONTH(MaxD, 0)
+VAR PM1  = EOMONTH(MaxD, -2) + 1
+VAR PM2  = EOMONTH(MaxD, -1)
+VAR CM   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= CM1 && dim_calendar[Date] <= CM2))
+VAR PM   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= PM1 && dim_calendar[Date] <= PM2))
+VAR d    = DIVIDE(CM - PM, PM, BLANK())
+VAR Up   = UNICHAR(9650)
+VAR Down = UNICHAR(9660)
+RETURN IF(ISBLANK(d), "–", IF(d >= 0, Up, Down) & " " & FORMAT(ABS(d), "0.0%"))
+
+// ----- YoY (same month last year) -----
+DEFINE
+FUNCTION YoY_Perc = ( _measure : expr ) =>
+VAR MaxD = MAX(dim_calendar[Date])
+VAR CY1  = DATE(YEAR(MaxD), MONTH(MaxD), 1)
+VAR CY2  = EOMONTH(MaxD, 0)
+VAR PY1  = EDATE(CY1, -12)
+VAR PY2  = EOMONTH(PY1, 0)
+VAR CY   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= CY1 && dim_calendar[Date] <= CY2))
+VAR PY   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= PY1 && dim_calendar[Date] <= PY2))
+RETURN DIVIDE(CY - PY, PY, BLANK())
+
+DEFINE
+FUNCTION YoY_Icon = ( _measure : expr ) =>
+VAR MaxD = MAX(dim_calendar[Date])
+VAR CY1  = DATE(YEAR(MaxD), MONTH(MaxD), 1)
+VAR CY2  = EOMONTH(MaxD, 0)
+VAR PY1  = EDATE(CY1, -12)
+VAR PY2  = EOMONTH(PY1, 0)
+VAR CY   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= CY1 && dim_calendar[Date] <= CY2))
+VAR PY   = CALCULATE(_measure, FILTER(ALL(dim_calendar[Date]), dim_calendar[Date] >= PY1 && dim_calendar[Date] <= PY2))
+VAR d    = DIVIDE(CY - PY, PY, BLANK())
+VAR Up   = UNICHAR(9650)
+VAR Down = UNICHAR(9660)
+RETURN IF(ISBLANK(d), "–", IF(d >= 0, Up, Down) & " " & FORMAT(ABS(d), "0.0%"))
+
+// ----- PoP (previous period same length as current selection) -----
+DEFINE
+FUNCTION PoP_Perc = ( _measure : expr ) =>
+VAR _StartDate = MIN('dim_calendar'[Date])
+VAR _EndDate   = MAX('dim_calendar'[Date])
+VAR _PeriodLen = DATEDIFF(_StartDate, _EndDate, DAY) + 1
+VAR _PrevStart = _StartDate - _PeriodLen
+VAR _PrevEnd   = _StartDate - 1
+VAR _CurrVal =
+    CALCULATE(
+        _measure,
+        FILTER(ALL('dim_calendar'),
+            'dim_calendar'[Date] >= _StartDate &&
+            'dim_calendar'[Date] <= _EndDate
+        )
+    )
+VAR _PrevVal =
+    CALCULATE(
+        _measure,
+        FILTER(ALL('dim_calendar'),
+            'dim_calendar'[Date] >= _PrevStart &&
+            'dim_calendar'[Date] <= _PrevEnd
+        )
+    )
+RETURN DIVIDE(_CurrVal - _PrevVal, _PrevVal, BLANK())
+
+DEFINE
+FUNCTION PoP_Icon = ( _measure : expr ) =>
+VAR _StartDate = MIN('dim_calendar'[Date])
+VAR _EndDate   = MAX('dim_calendar'[Date])
+VAR _PeriodLen = DATEDIFF(_StartDate, _EndDate, DAY) + 1
+VAR _PrevStart = _StartDate - _PeriodLen
+VAR _PrevEnd   = _StartDate - 1
+VAR _CurrVal =
+    CALCULATE(
+        _measure,
+        FILTER(ALL('dim_calendar'),
+            'dim_calendar'[Date] >= _StartDate &&
+            'dim_calendar'[Date] <= _EndDate
+        )
+    )
+VAR _PrevVal =
+    CALCULATE(
+        _measure,
+        FILTER(ALL('dim_calendar'),
+            'dim_calendar'[Date] >= _PrevStart &&
+            'dim_calendar'[Date] <= _PrevEnd
+        )
+    )
+VAR d    = DIVIDE(_CurrVal - _PrevVal, _PrevVal, BLANK())
+VAR Up   = UNICHAR(9650)
+VAR Down = UNICHAR(9660)
+RETURN IF(ISBLANK(d), "–", IF(d >= 0, Up, Down) & " " & FORMAT(ABS(d), "0.0%"))
+
+// =========================
+// COLOR HELPERS
+// =========================
+
+// ----- Color (normal) -----
+DEFINE
+FUNCTION Delta_Color = ( _value : expr ) =>
+VAR IsText    = NOT ISNONTEXT(_value)
+VAR HasUp     = IsText && CONTAINSSTRING(_value, "▲")
+VAR HasDown   = IsText && CONTAINSSTRING(_value, "▼")
+VAR Cleaned1  = IF(IsText, SUBSTITUTE(SUBSTITUTE(_value, "▲", ""), "▼", ""), _value)
+VAR Cleaned2  = IF(IsText, SUBSTITUTE(Cleaned1, "%", ""), Cleaned1)
+VAR NumRaw    = IF(ISBLANK(_value), BLANK(), IF(IsText, DIVIDE(VALUE(Cleaned2), 100), _value))
+VAR NumSigned = IF(IsText && (HasUp || HasDown), IF(HasDown, -ABS(NumRaw), ABS(NumRaw)), NumRaw)
+RETURN
+    SWITCH(
+        TRUE(),
+        ISBLANK(NumSigned), "#B0B0B0",
+        NumSigned > 0,      "#54DFBF",
+        NumSigned < 0,      "#EB704A",
+                            "#5A5A5A"
+    )
+
+// ----- Color (inverse: increase=red, decrease=green) -----
+DEFINE
+FUNCTION Delta_Color_Inverse = ( _value : expr ) =>
+VAR IsText    = NOT ISNONTEXT(_value)
+VAR HasUp     = IsText && CONTAINSSTRING(_value, "▲")
+VAR HasDown   = IsText && CONTAINSSTRING(_value, "▼")
+VAR Cleaned1  = IF(IsText, SUBSTITUTE(SUBSTITUTE(_value, "▲", ""), "▼", ""), _value)
+VAR Cleaned2  = IF(IsText, SUBSTITUTE(Cleaned1, "%", ""), Cleaned1)
+VAR NumRaw    = IF(ISBLANK(_value), BLANK(), IF(IsText, DIVIDE(VALUE(Cleaned2), 100), _value))
+VAR NumSigned = IF(IsText && (HasUp || HasDown), IF(HasDown, -ABS(NumRaw), ABS(NumRaw)), NumRaw)
+RETURN
+    SWITCH(
+        TRUE(),
+        ISBLANK(NumSigned), "#B0B0B0",
+        NumSigned > 0,      "#EB704A",
+        NumSigned < 0,      "#54DFBF",
+                            "#5A5A5A"
+    )
+
+// =========================
+// ADD-ONS (MTD / QoQ / YTD / PYTD / WoW / DoD)
+// =========================
+
+// ----- MoM_MTD -----
+DEFINE
+FUNCTION MoM_MTD_Perc = ( _measure : expr ) =>
+VAR CM_MTD = CALCULATE( _measure, DATESMTD( dim_calendar[Date] ) )
+VAR PM_MTD = CALCULATE( _measure, DATEADD( DATESMTD( dim_calendar[Date] ), -1, MONTH ) )
+RETURN DIVIDE( CM_MTD - PM_MTD, PM_MTD, BLANK() )
+
+DEFINE
+FUNCTION MoM_MTD_Icon = ( _measure : expr ) =>
+VAR CM_MTD = CALCULATE( _measure, DATESMTD( dim_calendar[Date] ) )
+VAR PM_MTD = CALCULATE( _measure, DATEADD( DATESMTD( dim_calendar[Date] ), -1, MONTH ) )
+VAR d      = DIVIDE( CM_MTD - PM_MTD, PM_MTD, BLANK() )
+VAR Up     = UNICHAR(9650)
+VAR Dw     = UNICHAR(9660)
+RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )
+
+// ----- YoY_MTD -----
+DEFINE
+FUNCTION YoY_MTD_Perc = ( _measure : expr ) =>
+VAR CY_MTD = CALCULATE( _measure, DATESMTD( dim_calendar[Date] ) )
+VAR PY_MTD = CALCULATE( _measure, SAMEPERIODLASTYEAR( DATESMTD( dim_calendar[Date] ) ) )
+RETURN DIVIDE( CY_MTD - PY_MTD, PY_MTD, BLANK() )
+
+DEFINE
+FUNCTION YoY_MTD_Icon = ( _measure : expr ) =>
+VAR CY_MTD = CALCULATE( _measure, DATESMTD( dim_calendar[Date] ) )
+VAR PY_MTD = CALCULATE( _measure, SAMEPERIODLASTYEAR( DATESMTD( dim_calendar[Date] ) ) )
+VAR d      = DIVIDE( CY_MTD - PY_MTD, PY_MTD, BLANK() )
+VAR Up     = UNICHAR(9650)
+VAR Dw     = UNICHAR(9660)
+RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )
+
+// ----- QoQ (current quarter vs previous quarter) -----
+DEFINE
+FUNCTION QoQ_Perc = ( _measure : expr ) =>
+VAR CQ = CALCULATE( _measure, DATESQTD( dim_calendar[Date] ) )
+VAR PQ = CALCULATE( _measure, DATEADD( DATESQTD( dim_calendar[Date] ), -1, QUARTER ) )
+RETURN DIVIDE( CQ - PQ, PQ, BLANK() )
+
+DEFINE
+FUNCTION QoQ_Icon = ( _measure : expr ) =>
+VAR CQ = CALCULATE( _measure, DATESQTD( dim_calendar[Date] ) )
+VAR PQ = CALCULATE( _measure, DATEADD( DATESQTD( dim_calendar[Date] ), -1, QUARTER ) )
+VAR d  = DIVIDE( CQ - PQ, PQ, BLANK() )
+VAR Up = UNICHAR(9650)
+VAR Dw = UNICHAR(9660)
+RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )
+
+// ----- YTD (current YTD vs previous YTD) -----
+DEFINE
+FUNCTION YTD_Perc = ( _measure : expr ) =>
+VAR CYTD = CALCULATE( _measure, DATESYTD( dim_calendar[Date] ) )
+VAR PYTD = CALCULATE( _measure, DATEADD( DATESYTD( dim_calendar[Date] ), -1, YEAR ) )
+RETURN DIVIDE( CYTD - PYTD, PYTD, BLANK() )
+
+DEFINE
+FUNCTION YTD_Icon = ( _measure : expr ) =>
+VAR CYTD = CALCULATE( _measure, DATESYTD( dim_calendar[Date] ) )
+VAR PYTD = CALCULATE( _measure, DATEADD( DATESYTD( dim_calendar[Date] ), -1, YEAR ) )
+VAR d    = DIVIDE( CYTD - PYTD, PYTD, BLANK() )
+VAR Up   = UNICHAR(9650)
+VAR Dw   = UNICHAR(9660)
+RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )
+
+// ----- YoY_YTD (YTD vs same YTD last year) -----
+DEFINE
+FUNCTION YoY_YTD_Perc = ( _measure : expr ) =>
+VAR CYTD = CALCULATE( _measure, DATESYTD( dim_calendar[Date] ) )
+VAR PYTD = CALCULATE( _measure, SAMEPERIODLASTYEAR( DATESYTD( dim_calendar[Date] ) ) )
+RETURN DIVIDE( CYTD - PYTD, PYTD, BLANK() )
+
+DEFINE
+FUNCTION YoY_YTD_Icon = ( _measure : expr ) =>
+VAR CYTD = CALCULATE( _measure, DATESYTD( dim_calendar[Date] ) )
+VAR PYTD = CALCULATE( _measure, SAMEPERIODLASTYEAR( DATESYTD( dim_calendar[Date] ) ) )
+VAR d    = DIVIDE( CYTD - PYTD, PYTD, BLANK() )
+VAR Up   = UNICHAR(9650)
+VAR Dw   = UNICHAR(9660)
+RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )
+
+// ----- WoW (last 1 week vs previous 1 week) -----
+DEFINE
+FUNCTION WoW_Perc = ( _measure : expr ) =>
+VAR CurrWeek =
+    CALCULATE(
+        _measure,
+        DATESINPERIOD( dim_calendar[Date], MAX( dim_calendar[Date] ), WEEK, 1 )
+    )
+VAR PrevWeek =
+    CALCULATE(
+        _measure,
+        DATEADD( DATESINPERIOD( dim_calendar[Date], MAX( dim_calendar[Date] ), WEEK, 1 ), -1, WEEK )
+    )
+RETURN DIVIDE( CurrWeek - PrevWeek, PrevWeek, BLANK() )
+
+DEFINE
+FUNCTION WoW_Icon = ( _measure : expr ) =>
+VAR CurrWeek =
+    CALCULATE(
+        _measure,
+        DATESINPERIOD( dim_calendar[Date], MAX( dim_calendar[Date] ), WEEK, 1 )
+    )
+VAR PrevWeek =
+    CALCULATE(
+        _measure,
+        DATEADD( DATESINPERIOD( dim_calendar[Date], MAX( dim_calendar[Date] ), WEEK, 1 ), -1, WEEK )
+    )
+VAR d    = DIVIDE( CurrWeek - PrevWeek, PrevWeek, BLANK() )
+VAR Up   = UNICHAR(9650)
+VAR Dw   = UNICHAR(9660)
+RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )
+
+// ----- DoD (current day vs previous day) -----
+DEFINE
+FUNCTION DoD_Perc = ( _measure : expr ) =>
+VAR CD = CALCULATE( _measure, LASTDATE( dim_calendar[Date] ) )
+VAR PD = CALCULATE( _measure, DATEADD( dim_calendar[Date], -1, DAY ) )
+RETURN DIVIDE( CD - PD, PD, BLANK() )
+
+DEFINE
+FUNCTION DoD_Icon = ( _measure : expr ) =>
+VAR CD = CALCULATE( _measure, LASTDATE( dim_calendar[Date] ) )
+VAR PD = CALCULATE( _measure, DATEADD( dim_calendar[Date], -1, DAY ) )
+VAR d  = DIVIDE( CD - PD, PD, BLANK() )
+VAR Up = UNICHAR(9650)
+VAR Dw = UNICHAR(9660)
+RETURN IF( ISBLANK(d), "–", IF( d >= 0, Up, Dw ) & " " & FORMAT( ABS(d), "0.0%") )

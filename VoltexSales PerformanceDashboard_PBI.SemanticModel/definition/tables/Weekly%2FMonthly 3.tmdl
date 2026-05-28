@@ -1,0 +1,48 @@
+table 'Weekly/Monthly 3'
+	lineageTag: a60fe11c-3eeb-43f6-8c1c-601ffb172d20
+
+	column Weekly/Monthly
+		lineageTag: 58560830-4a72-4ba8-be91-920beb6242b6
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Weekly/Monthly Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Weekly/Monthly Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Weekly/Monthly Fields'
+		isHidden
+		lineageTag: 25087a52-ff52-4e94-aec1-1bfe69480867
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Weekly/Monthly Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Weekly/Monthly Order'
+		isHidden
+		formatString: 0
+		lineageTag: 3db83360-0631-465b-a37f-0a4449010dbb
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Weekly/Monthly 3' = calculated
+		mode: import
+		source =
+				{
+				    ("WeekOfYear", NAMEOF('dim_calendar'[WeekOfYear]), 0),
+				    ("Month", NAMEOF('dim_calendar'[Date].[Month]), 1)
+				}
+
+	annotation PBI_Id = 0a1d2f0566e54eb398178a70558f6818
+

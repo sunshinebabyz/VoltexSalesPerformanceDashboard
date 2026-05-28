@@ -1,0 +1,298 @@
+table fact_order
+	lineageTag: a6d9246b-f294-4b59-882c-103e1bd20a75
+
+	column Order_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 1d6d99c7-e1d3-4f0b-9854-65d10b41835b
+		summarizeBy: count
+		sourceColumn: Order_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 90241a05-77fd-48ff-9047-45671360f231
+		summarizeBy: none
+		sourceColumn: Customer_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Payment_ID
+		dataType: string
+		lineageTag: c76b1490-5a84-47e8-b8fb-130915d77cad
+		summarizeBy: none
+		sourceColumn: Payment_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Shipping_ID
+		dataType: string
+		lineageTag: 6c8b8d7f-6b33-4dae-81a7-0e65574dfb6f
+		summarizeBy: none
+		sourceColumn: Shipping_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region_ID
+		dataType: string
+		lineageTag: 8a3f30d8-153a-4fee-a7b8-f123a5191d89
+		summarizeBy: none
+		sourceColumn: Region_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Return_ID
+		dataType: string
+		lineageTag: fd7aa00e-bb31-4a73-b8ef-ba532e22ae75
+		summarizeBy: none
+		sourceColumn: Return_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_ID
+		dataType: string
+		lineageTag: bb45fe71-8e89-44be-bffb-86d34a350768
+		summarizeBy: none
+		sourceColumn: Product_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1c33eddf-13d0-441f-9a88-daa76c443289
+		summarizeBy: none
+		sourceColumn: Order_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_DateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f258c8d4-d0b3-4b52-859e-887ae2e4775f
+		summarizeBy: none
+		sourceColumn: Order_DateTime
+
+		variation Variation
+			isDefault
+			relationship: 1e687e4a-67b3-4f28-8647-44d409813232
+			defaultHierarchy: LocalDateTable_94996fb0-bd2f-4429-b721-f22c8867e7d5.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_ConfirmedDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: df86b473-a253-48f7-952f-2feacbcacbf2
+		summarizeBy: none
+		sourceColumn: Order_ConfirmedDateTime
+
+		variation Variation
+			isDefault
+			relationship: 150df57b-8d5d-404b-b138-c37d96047713
+			defaultHierarchy: LocalDateTable_ff29f2a6-0068-4775-bec0-e000fc1258ca.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Warehouse_PackingDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7c102dfb-e725-4636-90fd-0c93321cf4a9
+		summarizeBy: none
+		sourceColumn: Warehouse_PackingDateTime
+
+		variation Variation
+			isDefault
+			relationship: 00b56398-5390-484d-aef3-33347317c664
+			defaultHierarchy: LocalDateTable_32a590f9-9f47-41f4-8743-4d9d4e6b7ed2.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Shipping_PickupDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 56e7e72e-73ef-481b-b7b2-72897b5e4763
+		summarizeBy: none
+		sourceColumn: Shipping_PickupDateTime
+
+		variation Variation
+			isDefault
+			relationship: e9639348-5592-4b18-9933-ef3bdd10b442
+			defaultHierarchy: LocalDateTable_2aa948b0-cdf7-4e5e-9cb4-907216f39e82.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Shipping_OutForDeliveryDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d4c29b48-eb86-4f15-98a7-a57103f742f9
+		summarizeBy: none
+		sourceColumn: Shipping_OutForDeliveryDateTime
+
+		variation Variation
+			isDefault
+			relationship: 01e105b5-1acc-43a5-918b-3ba02272b200
+			defaultHierarchy: LocalDateTable_504f0d37-f9e1-4f7d-ab3e-425dc9d05ff3.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Delivery_PromisedDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 40e1f6cd-9a92-4111-905a-5440cd370efa
+		summarizeBy: none
+		sourceColumn: Delivery_PromisedDateTime
+
+		variation Variation
+			isDefault
+			relationship: 4ec0fed6-1136-4063-bc3d-ee539347c888
+			defaultHierarchy: LocalDateTable_060e7d7f-f7b7-4335-bceb-99ac511ec7f3.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Delivery_ActualDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 6ec87816-1338-457a-aac3-28aae72ff607
+		summarizeBy: none
+		sourceColumn: Delivery_ActualDateTime
+
+		variation Variation
+			isDefault
+			relationship: cd3189c1-9e91-4af1-b5ad-407f520b868b
+			defaultHierarchy: LocalDateTable_0db30c33-c303-4090-ab5c-16abf3bd62b0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Return_RequestDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ce76c92e-e097-4931-9fc8-200b0c5ead83
+		summarizeBy: none
+		sourceColumn: Return_RequestDateTime
+
+		variation Variation
+			isDefault
+			relationship: d8c0d1ed-fdc3-438a-a5bb-9937fbc42904
+			defaultHierarchy: LocalDateTable_8cc485a4-ace6-457e-b69a-c84d868a1535.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_Discount
+		dataType: double
+		lineageTag: 6a527957-841e-4289-b7ce-e39c41d35dfe
+		summarizeBy: sum
+		sourceColumn: Order_Discount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Order_OpEx
+		dataType: double
+		lineageTag: 7dc62ec5-58b7-46e5-9d99-167ce33b2d7b
+		summarizeBy: sum
+		sourceColumn: Order_OpEx
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Order_ReturnCost
+		dataType: double
+		lineageTag: 7bf95c10-135c-40bc-9e2c-940f22f7cb29
+		summarizeBy: sum
+		sourceColumn: Order_ReturnCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Feedback_Rating
+		dataType: int64
+		formatString: 0
+		lineageTag: fcdc6604-1a06-44ef-b4b3-e8453203318c
+		summarizeBy: sum
+		sourceColumn: Feedback_Rating
+
+		annotation SummarizationSetBy = Automatic
+
+	column Feedback_Sentiment
+		dataType: string
+		lineageTag: 53fa519a-84d5-4961-b743-a535d691385a
+		summarizeBy: none
+		sourceColumn: Feedback_Sentiment
+
+		annotation SummarizationSetBy = Automatic
+
+	column Is_Returned
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 527b1b34-dda1-4b0d-bbec-7a6d4174f815
+		summarizeBy: none
+		sourceColumn: Is_Returned
+
+		annotation SummarizationSetBy = Automatic
+
+	column Delivery_Status
+		dataType: string
+		lineageTag: 45aaf388-53e8-42c9-b9a6-931be09ad36b
+		summarizeBy: none
+		sourceColumn: Delivery_Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderStatus
+		dataType: string
+		lineageTag: 3587854e-db4a-446e-844c-cfd77c76d61a
+		summarizeBy: none
+		sourceColumn: OrderStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 767292dc-7e39-4756-a8ac-fed0e1c7af01
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_order = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Files("C:\Users\chaun\Desktop\Road to DA\Power BI CLASS\Data Source\Voltex_Data_01.04.2024 to 30.09.2024 (1)\fact_order"),
+				    #"Filtered Hidden Files1" = Table.SelectRows(Source, each [Attributes]?[Hidden]? <> true),
+				    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File", each #"Transform File"([Content])),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+				    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File"}),
+				    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File", Table.ColumnNames(#"Transform File"(#"Sample File"))),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Table Column1",{{"Source.Name", type text}, {"Order_ID", Int64.Type}, {"Customer_ID", Int64.Type}, {"Payment_ID", type text}, {"Shipping_ID", type text}, {"Region_ID", type text}, {"Return_ID", type text}, {"Product_ID", type text}, {"Order_Date", type datetime}, {"Order_DateTime", type datetime}, {"Order_ConfirmedDateTime", type datetime}, {"Warehouse_PackingDateTime", type datetime}, {"Shipping_PickupDateTime", type datetime}, {"Shipping_OutForDeliveryDateTime", type datetime}, {"Delivery_PromisedDateTime", type datetime}, {"Delivery_ActualDateTime", type datetime}, {"Order_Status", type text}, {"Return_RequestDateTime", type datetime}, {"Order_Quantity", type text}, {"Order_Discount", type number}, {"Order_OpEx", type number}, {"Order_ReturnCost", type number}, {"Feedback_Rating", Int64.Type}, {"Feedback_Sentiment", type text}, {"'return_isreturned':'delivery_status'", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Source.Name"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Columns", {"Order_ID"}),
+				    #"Uppercased Text" = Table.TransformColumns(#"Removed Duplicates",{{"Order_Status", Text.Upper, type text}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Uppercased Text", "OrderStatus", each if Text.Contains([Order_Status], "COM") then "COMPLETED" else if Text.Contains([Order_Status], "REF") then "REFUNDED" else "NONE"),
+				    #"Filtered Rows" = Table.SelectRows(#"Added Conditional Column", each true),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Filtered Rows",{"Order_Status"}),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Removed Columns1", "Quantity", each if Text.Contains([Order_Quantity], "one") then 1 else if Text.Contains([Order_Quantity], "two") then 2 else if Text.Contains([Order_Quantity], "three") then 3 else if Text.Contains([Order_Quantity], "1") then 1 else if Text.Contains([Order_Quantity], "2") then 2 else if Text.Contains([Order_Quantity], "3") then 3 else "none"),
+				    #"Removed Columns2" = Table.RemoveColumns(#"Added Conditional Column1",{"Order_Quantity"}),
+				    #"Split Column by Delimiter" = Table.SplitColumn(#"Removed Columns2", "'return_isreturned':'delivery_status'", Splitter.SplitTextByDelimiter(":", QuoteStyle.Csv), {"'return_isreturned':'delivery_status'.1", "'return_isreturned':'delivery_status'.2"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Split Column by Delimiter",{{"'return_isreturned':'delivery_status'.1", type text}, {"'return_isreturned':'delivery_status'.2", type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type1","'","",Replacer.ReplaceText,{"'return_isreturned':'delivery_status'.1"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","'","",Replacer.ReplaceText,{"'return_isreturned':'delivery_status'.2"}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Replaced Value1",{{"'return_isreturned':'delivery_status'.2", Text.Trim, type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Trimmed Text",{{"'return_isreturned':'delivery_status'.1", "Is_Returned"}, {"'return_isreturned':'delivery_status'.2", "Delivery_Status"}}),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Renamed Columns",{{"Is_Returned", type logical}})
+				in
+				    #"Changed Type2"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

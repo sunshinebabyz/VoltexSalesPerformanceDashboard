@@ -1,0 +1,50 @@
+table dim_region
+	lineageTag: d3fd41a3-d5ae-4b8a-8a3d-fc7cc508c0a8
+
+	column Region_ID
+		dataType: string
+		lineageTag: 94ebb70c-137a-4691-ab2e-3b34f1662a39
+		summarizeBy: none
+		sourceColumn: Region_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region_Name
+		dataType: string
+		lineageTag: 9932d6b6-e21e-45c3-be4a-5c936cc8a396
+		summarizeBy: none
+		sourceColumn: Region_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region_State
+		dataType: string
+		lineageTag: 1263ff0e-98f2-40e8-8f10-413c93bd23a8
+		summarizeBy: none
+		sourceColumn: Region_State
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region_DistributionCenter
+		dataType: string
+		lineageTag: a1907f34-fa75-4603-9bdb-49e84d8d6015
+		summarizeBy: none
+		sourceColumn: Region_DistributionCenter
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_region = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\chaun\Desktop\Road to DA\Power BI CLASS\Data Source\Voltex_Data_01.04.2024 to 30.09.2024 (1)\dim_region.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}, {"Column4", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"Region_ID", type text}, {"Region_Name", type text}, {"Region_State", type text}, {"Region_DistributionCenter", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

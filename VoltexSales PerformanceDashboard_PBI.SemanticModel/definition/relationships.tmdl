@@ -1,0 +1,93 @@
+relationship 1e687e4a-67b3-4f28-8647-44d409813232
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_order.Order_DateTime
+	toColumn: LocalDateTable_94996fb0-bd2f-4429-b721-f22c8867e7d5.Date
+
+relationship 150df57b-8d5d-404b-b138-c37d96047713
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_order.Order_ConfirmedDateTime
+	toColumn: LocalDateTable_ff29f2a6-0068-4775-bec0-e000fc1258ca.Date
+
+relationship 00b56398-5390-484d-aef3-33347317c664
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_order.Warehouse_PackingDateTime
+	toColumn: LocalDateTable_32a590f9-9f47-41f4-8743-4d9d4e6b7ed2.Date
+
+relationship e9639348-5592-4b18-9933-ef3bdd10b442
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_order.Shipping_PickupDateTime
+	toColumn: LocalDateTable_2aa948b0-cdf7-4e5e-9cb4-907216f39e82.Date
+
+relationship 01e105b5-1acc-43a5-918b-3ba02272b200
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_order.Shipping_OutForDeliveryDateTime
+	toColumn: LocalDateTable_504f0d37-f9e1-4f7d-ab3e-425dc9d05ff3.Date
+
+relationship 4ec0fed6-1136-4063-bc3d-ee539347c888
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_order.Delivery_PromisedDateTime
+	toColumn: LocalDateTable_060e7d7f-f7b7-4335-bceb-99ac511ec7f3.Date
+
+relationship cd3189c1-9e91-4af1-b5ad-407f520b868b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_order.Delivery_ActualDateTime
+	toColumn: LocalDateTable_0db30c33-c303-4090-ab5c-16abf3bd62b0.Date
+
+relationship d8c0d1ed-fdc3-438a-a5bb-9937fbc42904
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_order.Return_RequestDateTime
+	toColumn: LocalDateTable_8cc485a4-ace6-457e-b69a-c84d868a1535.Date
+
+relationship b5125a87-bf46-4bb0-90c3-c890ab7a8648
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_calendar.Date
+	toColumn: LocalDateTable_76154080-055a-425e-982c-2583e9971da6.Date
+
+relationship 0f0157aa-6e23-482d-9e30-9886c422418a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_calendar.StartOfMonth
+	toColumn: LocalDateTable_a027eba7-c8c3-4eb9-9a43-25f53c09211e.Date
+
+relationship 0cd2d41c-d3da-4df6-a54f-43fb84fe30da
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_calendar.EndOfMonth
+	toColumn: LocalDateTable_88c8c471-9898-4f24-9265-86638b289336.Date
+
+relationship c2cb80d9-7ae9-44e9-aab7-c8b6cb6fdadd
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_calendar.StartOfYear
+	toColumn: LocalDateTable_c7167997-90b7-4956-9e44-982a492e4d1b.Date
+
+relationship bb4b283f-6ca1-48e2-9661-3c55913414d3
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_calendar.EndOfYear
+	toColumn: LocalDateTable_1ac128b5-82a1-4198-b67f-adb58f97f138.Date
+
+relationship bf05e6ad-0e9c-b5c9-c60c-d5c09cf79403
+	fromColumn: fact_order.Customer_ID
+	toColumn: dim_customer.Customer_ID
+
+relationship 6aaf8e3e-ad31-6e5f-0b77-996b0f7df769
+	fromColumn: fact_order.Region_ID
+	toColumn: dim_region.Region_ID
+
+relationship acc54670-9d25-7c27-efb1-510b07d56093
+	fromColumn: fact_order.Payment_ID
+	toColumn: dim_payment.Payment_ID
+
+relationship bb60de4f-682b-dffb-b581-7436b9436f55
+	fromColumn: fact_order.Product_ID
+	toColumn: dim_product.Product_ID
+
+relationship 0510b38e-0ac4-badb-4378-5f8f6bb736d1
+	fromColumn: fact_order.Shipping_ID
+	toColumn: dim_shipping.Shipping_ID
+
+relationship 2d11802a-4b69-5eec-1b1b-569a069414e3
+	fromColumn: fact_order.Return_ID
+	toColumn: dim_return.Return_ID
+
+relationship 081cd023-12a0-a360-31e4-26f99d5392e3
+	fromColumn: fact_order.Order_Date
+	toColumn: dim_calendar.Date
+

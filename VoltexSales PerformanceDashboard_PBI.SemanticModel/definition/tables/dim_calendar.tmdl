@@ -1,0 +1,271 @@
+table dim_calendar
+	lineageTag: 2d76f99e-3bdf-487c-b9e1-1a052752313d
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 7e481861-d976-45a1-927a-0dbc2b237d46
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: b5125a87-bf46-4bb0-90c3-c890ab7a8648
+			defaultHierarchy: LocalDateTable_76154080-055a-425e-982c-2583e9971da6.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 6aea3346-d6a7-44e7-b9ef-a39774e3a992
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: b0ef1b38-645d-4edb-8ba6-057e210d76fd
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: int64
+		formatString: 0
+		lineageTag: 39054c10-f60e-4f07-94a2-2ba96ef9b0c1
+		summarizeBy: sum
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayName
+		dataType: string
+		lineageTag: ab76761b-9b70-41f7-aeb9-18fb269229e6
+		summarizeBy: none
+		sourceColumn: DayName
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsWeekday
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 59688ae2-acde-44ac-8a8a-188eae85eba4
+		summarizeBy: none
+		sourceColumn: IsWeekday
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekOfYear
+		dataType: int64
+		formatString: 0
+		lineageTag: dfdfbef7-5675-4edd-869c-79984dee049e
+		summarizeBy: sum
+		sourceColumn: WeekOfYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekOfMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: fcfdd177-17cd-4fe7-aae4-d2d915e221ea
+		summarizeBy: sum
+		sourceColumn: WeekOfMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName
+		dataType: string
+		lineageTag: 4bece79d-2eea-4a9a-be20-4b23edba290f
+		summarizeBy: none
+		sourceColumn: MonthName
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartOfMonth
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 59b0215a-7740-4773-8e8f-1e6fbee78ed1
+		summarizeBy: none
+		sourceColumn: StartOfMonth
+
+		variation Variation
+			isDefault
+			relationship: 0f0157aa-6e23-482d-9e30-9886c422418a
+			defaultHierarchy: LocalDateTable_a027eba7-c8c3-4eb9-9a43-25f53c09211e.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column EndOfMonth
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8c1ba48b-3c46-46b2-ba62-a6ed7526f5de
+		summarizeBy: none
+		sourceColumn: EndOfMonth
+
+		variation Variation
+			isDefault
+			relationship: 0cd2d41c-d3da-4df6-a54f-43fb84fe30da
+			defaultHierarchy: LocalDateTable_88c8c471-9898-4f24-9265-86638b289336.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column MonthYearSort
+		dataType: string
+		lineageTag: ad302070-ecd5-4e94-83b4-b7e5a01398f9
+		summarizeBy: none
+		sourceColumn: MonthYearSort
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: f6cc6413-dc6d-4760-9167-0c819100617e
+		summarizeBy: sum
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuarterName
+		dataType: string
+		lineageTag: ab15a950-d9ed-4b1d-a2a4-5cd22d560599
+		summarizeBy: none
+		sourceColumn: QuarterName
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartOfYear
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 04cec0e4-70ba-4145-b258-3d860aa93b3d
+		summarizeBy: none
+		sourceColumn: StartOfYear
+
+		variation Variation
+			isDefault
+			relationship: c2cb80d9-7ae9-44e9-aab7-c8b6cb6fdadd
+			defaultHierarchy: LocalDateTable_c7167997-90b7-4956-9e44-982a492e4d1b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column EndOfYear
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 7b3efb13-2dcd-4fc6-b89e-253b21304716
+		summarizeBy: none
+		sourceColumn: EndOfYear
+
+		variation Variation
+			isDefault
+			relationship: bb4b283f-6ca1-48e2-9661-3c55913414d3
+			defaultHierarchy: LocalDateTable_1ac128b5-82a1-4198-b67f-adb58f97f138.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column FiscalYear
+		dataType: int64
+		formatString: 0
+		lineageTag: 681d1f97-aeff-485f-b740-fe4ca99e29ae
+		summarizeBy: sum
+		sourceColumn: FiscalYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: 8197566e-be4c-4d89-ae29-649011f2ae3d
+		summarizeBy: sum
+		sourceColumn: FiscalMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalQuarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 1ec348f2-b7b7-49a2-a364-0f05889d4cbd
+		summarizeBy: sum
+		sourceColumn: FiscalQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalQuarterName
+		dataType: string
+		lineageTag: 0f600ff1-467b-4792-864e-23038ac953f3
+		summarizeBy: none
+		sourceColumn: FiscalQuarterName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_calendar = m
+		mode: import
+		source = ```
+				let
+				    // ===== CÀI ĐẶT NĂM TÀI CHÍNH =====
+				    FiscalYearStartMonth = 1, 
+				    // ===================================
+				    // Lấy ngày bắt đầu và ngày kết thúc từ fact_order
+				    SourceDates = Table.TransformColumnTypes(#"fact_order", {{"Order_Date", type date}})[Order_Date],
+				    StartDate = List.Min(SourceDates),
+				    EndDate = List.Max(SourceDates),
+				    // Tạo danh sách ngày
+				    DayCount = Duration.Days(EndDate - StartDate) + 1,
+				    DateList = List.Dates(StartDate, DayCount, #duration(1, 0, 0, 0)),
+				    // Chuyển danh sách thành bảng
+				    DateTable = Table.FromList(DateList, Splitter.SplitByNothing(), {"Date"}),
+				    DateTableWithColumns = Table.TransformColumnTypes(DateTable, {{"Date", type date}}),
+				    // === CỘT CƠ BẢN ===
+				    #"Inserted Year" = Table.AddColumn(DateTableWithColumns, "Year", each Date.Year([Date]), Int64.Type),
+				    #"Inserted Month" = Table.AddColumn(#"Inserted Year", "Month", each Date.Month([Date]), Int64.Type),
+				    #"Inserted Day" = Table.AddColumn(#"Inserted Month", "Day", each Date.Day([Date]), Int64.Type),
+				    #"Inserted Day of Week" = Table.AddColumn(#"Inserted Day", "DayOfWeek", each Date.DayOfWeek([Date], Day.Monday), Int64.Type),
+				    #"Inserted Day Name" = Table.AddColumn(#"Inserted Day of Week", "DayName", each Date.DayOfWeekName([Date]), type text),
+				    #"Inserted Is Weekday" = Table.AddColumn(#"Inserted Day Name", "IsWeekday", each [DayOfWeek] < 5, type logical),
+				    // === CỘT VỀ TUẦN ===
+				    #"Inserted Week of Year" = Table.AddColumn(#"Inserted Is Weekday", "WeekOfYear", each Date.WeekOfYear([Date]), Int64.Type),
+				    #"Inserted Week of Month" = Table.AddColumn(#"Inserted Week of Year", "WeekOfMonth", each Date.WeekOfMonth([Date]), Int64.Type),
+				    // === CỘT VỀ THÁNG ===
+				    #"Inserted Month Name" = Table.AddColumn(#"Inserted Week of Month", "MonthName", each Date.MonthName([Date]), type text),
+				    #"Inserted Start of Month" = Table.AddColumn(#"Inserted Month Name", "StartOfMonth", each Date.StartOfMonth([Date]), type date),
+				    #"Inserted End of Month" = Table.AddColumn(#"Inserted Start of Month", "EndOfMonth", each Date.EndOfMonth([Date]), type date),
+				    #"Inserted Month-Year" = Table.AddColumn(#"Inserted End of Month", "MonthYearSort", each Text.From([Year]) & "-" & Text.PadStart(Text.From([Month]), 2, "0"), type text),
+				    // === CỘT VỀ QUÝ ===
+				    #"Inserted Quarter" = Table.AddColumn(#"Inserted Month-Year", "Quarter", each Date.QuarterOfYear([Date]), Int64.Type),
+				    #"Inserted Quarter Name" = Table.AddColumn(#"Inserted Quarter", "QuarterName", each "Q" & Text.From([Quarter]), type text),
+				    // === CỘT VỀ NĂM ===
+				    #"Inserted Start of Year" = Table.AddColumn(#"Inserted Quarter Name", "StartOfYear", each Date.StartOfYear([Date]), type date),
+				    #"Inserted End of Year" = Table.AddColumn(#"Inserted Start of Year", "EndOfYear", each Date.EndOfYear([Date]), type date),
+				    // === CỘT TÀI CHÍNH (FISCAL) ===
+				    #"Inserted Fiscal Year" = Table.AddColumn(#"Inserted End of Year", "FiscalYear", 
+				        each if [Month] >= FiscalYearStartMonth then [Year] else [Year] - 1, Int64.Type),
+				    #"Inserted Fiscal Month" = Table.AddColumn(#"Inserted Fiscal Year", "FiscalMonth", 
+				        each if [Month] >= FiscalYearStartMonth then [Month] - FiscalYearStartMonth + 1 else [Month] + (12 - FiscalYearStartMonth + 1), Int64.Type),
+				    #"Inserted Fiscal Quarter" = Table.AddColumn(#"Inserted Fiscal Month", "FiscalQuarter", 
+				        each Number.RoundUp([FiscalMonth] / 3), Int64.Type),
+				    #"Inserted Fiscal Quarter Name" = Table.AddColumn(#"Inserted Fiscal Quarter", "FiscalQuarterName", each "FQ" & Text.From([FiscalQuarter]), type text),
+				    // --- DỌN DẸP ---
+				    #"Removed Columns" = Table.RemoveColumns(#"Inserted Fiscal Quarter Name",{"DayOfWeek"})
+				in
+				    #"Removed Columns"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

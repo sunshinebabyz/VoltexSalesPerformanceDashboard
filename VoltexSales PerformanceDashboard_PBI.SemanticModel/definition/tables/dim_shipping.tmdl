@@ -1,0 +1,42 @@
+table dim_shipping
+	lineageTag: 72d00c95-ac3e-42b1-88d1-c115dd5c1861
+
+	column Shipping_ID
+		dataType: string
+		lineageTag: b98d5567-fa75-4b37-8ffa-b0c6c3334893
+		summarizeBy: none
+		sourceColumn: Shipping_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Shipping_Partner
+		dataType: string
+		lineageTag: ecb84bb2-73eb-4576-8645-42e895392e8d
+		summarizeBy: none
+		sourceColumn: Shipping_Partner
+
+		annotation SummarizationSetBy = Automatic
+
+	column Shipping_Type
+		dataType: string
+		lineageTag: 99aeeb04-484a-4005-a9ac-50dce6e0beb2
+		summarizeBy: none
+		sourceColumn: Shipping_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_shipping = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\chaun\Desktop\Road to DA\Power BI CLASS\Data Source\Voltex_Data_01.04.2024 to 30.09.2024 (1)\dim_shipping.csv"),[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"Shipping_ID", type text}, {"Shipping_Partner", type text}, {"Shipping_Type", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

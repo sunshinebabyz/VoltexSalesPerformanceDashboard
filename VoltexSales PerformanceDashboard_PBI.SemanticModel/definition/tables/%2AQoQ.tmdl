@@ -1,0 +1,246 @@
+table *QoQ
+	lineageTag: 0ee15ec2-1fcc-4b65-9986-3edc4891c725
+
+	measure Profit_QoQ_Label =
+			
+			VAR q2 =
+			    CALCULATE(
+			        [M_profit],
+			        FILTER(
+			            ALL('dim_calendar'),
+			            'dim_calendar'[Date] >= DATE(2024,4,1) &&
+			            'dim_calendar'[Date] <= DATE(2024,6,30)
+			        )
+			    )
+			
+			VAR q3 =
+			    CALCULATE(
+			        [M_profit],
+			        FILTER(
+			            ALL('dim_calendar'),
+			            'dim_calendar'[Date] >= DATE(2024,7,1) &&
+			            'dim_calendar'[Date] <= DATE(2024,9,30)
+			        )
+			    )
+			
+			VAR change =
+			    IF(
+			        NOT ISBLANK(q2) && q2 <> 0,
+			        DIVIDE(q3 - q2, q2)
+			    )
+			
+			RETURN
+			IF(
+			    NOT ISBLANK(q2) && NOT ISBLANK(q3),
+			    "Q2: " & FORMAT(q2 / 1000000, "0.0") & "M" &
+			    " | Q3: " & FORMAT(q3 / 1000000, "0.0") & "M" &
+			    " (" & FORMAT(change, "0%") &
+			    IF(change > 0, " ▲", " ▼") & ")"
+			)
+		lineageTag: 637376da-979d-4dce-822e-735a4f639a57
+
+	measure DeliDays_QoQ_Label =
+			
+			VAR q2 =
+			    CALCULATE(
+			        [M_Avg Delivery Days],
+			        FILTER(
+			            ALL('dim_calendar'),
+			            'dim_calendar'[Date] >= DATE(2024,4,1) &&
+			            'dim_calendar'[Date] <= DATE(2024,6,30)
+			        )
+			    )
+			
+			VAR q3 =
+			    CALCULATE(
+			        [M_Avg Delivery Days],
+			        FILTER(
+			            ALL('dim_calendar'),
+			            'dim_calendar'[Date] >= DATE(2024,7,1) &&
+			            'dim_calendar'[Date] <= DATE(2024,9,30)
+			        )
+			    )
+			
+			VAR change =
+			    IF(
+			        NOT ISBLANK(q2) && q2 <> 0,
+			        DIVIDE(q3 - q2, q2)
+			    )
+			
+			RETURN
+			IF(
+			    NOT ISBLANK(q2) && NOT ISBLANK(q3),
+			    "Q2: " & FORMAT(q2, "0.0") & "d" &
+			    " | Q3: " & FORMAT(q3, "0.0") & "d" &
+			    " (" & FORMAT(change, "0%") &
+			    IF(change > 0, " ▲", " ▼") & ")"
+			)
+		lineageTag: 867815c0-5d0a-4c96-b714-a6a87451c4ed
+
+	measure Orders_QoQ_Label =
+			
+			VAR q2 =
+			    CALCULATE(
+			        [M_orders],
+			        FILTER(
+			            ALL('dim_calendar'),
+			            'dim_calendar'[Date] >= DATE(2024,4,1) &&
+			            'dim_calendar'[Date] <= DATE(2024,6,30)
+			        )
+			    )
+			
+			VAR q3 =
+			    CALCULATE(
+			        [M_orders],
+			        FILTER(
+			            ALL('dim_calendar'),
+			            'dim_calendar'[Date] >= DATE(2024,7,1) &&
+			            'dim_calendar'[Date] <= DATE(2024,9,30)
+			        )
+			    )
+			
+			VAR change =
+			    IF(
+			        NOT ISBLANK(q2) && q2 <> 0,
+			        DIVIDE(q3 - q2, q2)
+			    )
+			
+			RETURN
+			IF(
+			    NOT ISBLANK(q2) && NOT ISBLANK(q3),
+			    "Q2: " & FORMAT(q2, "#,##0") &
+			    " | Q3: " & FORMAT(q3, "#,##0") &
+			    " (" & FORMAT(change, "0%") &
+			    IF(change > 0, " ▲", " ▼") & ")"
+			)
+		lineageTag: 3a008402-3aa2-4ed0-86b9-46db419f16fb
+
+	measure PM_QoQ_Label =
+			
+			VAR q2 =
+			    CALCULATE(
+			        [M_profit margin],
+			        FILTER(
+			            ALL('dim_calendar'),
+			            'dim_calendar'[Date] >= DATE(2024,4,1) &&
+			            'dim_calendar'[Date] <= DATE(2024,6,30)
+			        )
+			    )
+			
+			VAR q3 =
+			    CALCULATE(
+			        [M_profit margin],
+			        FILTER(
+			            ALL('dim_calendar'),
+			            'dim_calendar'[Date] >= DATE(2024,7,1) &&
+			            'dim_calendar'[Date] <= DATE(2024,9,30)
+			        )
+			    )
+			
+			VAR change_pp = (q3 - q2) * 100
+			
+			VAR arrow =
+			    IF(change_pp > 0, " ▲", " ▼")
+			
+			RETURN
+			IF(
+			    NOT ISBLANK(q2) && NOT ISBLANK(q3),
+			    "Q2: " & FORMAT(q2, "0.0%") &
+			    " | Q3: " & FORMAT(q3, "0.0%") &
+			    " (" & FORMAT(change_pp, "0.0") & "pp" & arrow & ")"
+			)
+		lineageTag: de7f9cfb-3075-4f0d-ae97-023e8f8af760
+
+	measure ReturnRate_QoQ_Label =
+			
+			VAR q2 =
+			    CALCULATE(
+			        [M_refund rate],
+			        FILTER(
+			            ALL('dim_calendar'),
+			            'dim_calendar'[Date] >= DATE(2024,4,1) &&
+			            'dim_calendar'[Date] <= DATE(2024,6,30)
+			        )
+			    )
+			
+			VAR q3 =
+			    CALCULATE(
+			        [M_refund rate],
+			        FILTER(
+			            ALL('dim_calendar'),
+			            'dim_calendar'[Date] >= DATE(2024,7,1) &&
+			            'dim_calendar'[Date] <= DATE(2024,9,30)
+			        )
+			    )
+			
+			VAR change_pp = (q3 - q2) * 100
+			
+			VAR arrow =
+			    IF(change_pp > 0, " ▲", " ▼")
+			
+			RETURN
+			IF(
+			    NOT ISBLANK(q2) && NOT ISBLANK(q3),
+			    "Q2: " & FORMAT(q2, "0.0%") &
+			    " | Q3: " & FORMAT(q3, "0.0%") &
+			    " (" & FORMAT(change_pp, "0.0") & "pp" & arrow & ")"
+			)
+		lineageTag: 2c7e3fed-28f0-47f7-913d-2eba0b36c185
+
+	measure Revenue_QoQ_Label =
+			
+			VAR q2 =
+			    CALCULATE(
+			        [M_revenue],
+			        FILTER(
+			            ALL('dim_calendar'),
+			            'dim_calendar'[Date] >= DATE(2024,4,1) &&
+			            'dim_calendar'[Date] <= DATE(2024,6,30)
+			        )
+			    )
+			
+			VAR q3 =
+			    CALCULATE(
+			        [M_revenue],
+			        FILTER(
+			            ALL('dim_calendar'),
+			            'dim_calendar'[Date] >= DATE(2024,7,1) &&
+			            'dim_calendar'[Date] <= DATE(2024,9,30)
+			        )
+			    )
+			
+			VAR change =
+			    IF(
+			        NOT ISBLANK(q2) && q2 <> 0,
+			        DIVIDE(q3 - q2, q2)
+			    )
+			
+			VAR arrow =
+			    IF(change > 0, " ▲", " ▼")
+			
+			RETURN
+			IF(
+			    NOT ISBLANK(q2) && NOT ISBLANK(q3),
+			    "Q2: " & FORMAT(q2 / 1000000, "0.0") & "M" &
+			    " | Q3: " & FORMAT(q3 / 1000000, "0.0") & "M" &
+			    " (" & FORMAT(change, "0%") & arrow & ")"
+			)
+		lineageTag: ef85acf6-ac26-4a62-aef5-ed35d8e01ab9
+
+	column Column
+		formatString: 0
+		lineageTag: 98a52d49-cf75-4e46-86f4-52716d354877
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition *QoQ = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = f83edc4453d341b2bf60b9361af7a52c
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

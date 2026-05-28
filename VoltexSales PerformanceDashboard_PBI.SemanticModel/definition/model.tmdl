@@ -1,0 +1,63 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup 'Transform File from fact_order'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Transform File from fact_order\Helper Queries'
+
+	annotation PBI_QueryGroupOrder = 0
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["dim_customer","dim_payment","dim_product","dim_region","dim_return","dim_shipping","fact_order","Sample File","Parameter1","Transform Sample File","Transform File","dim_calendar"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table dim_customer
+ref table dim_payment
+ref table dim_product
+ref table dim_region
+ref table dim_return
+ref table dim_shipping
+ref table fact_order
+ref table DateTableTemplate_c79145f1-6b61-4dc0-a7a8-9f7e8bcfdda5
+ref table LocalDateTable_94996fb0-bd2f-4429-b721-f22c8867e7d5
+ref table LocalDateTable_ff29f2a6-0068-4775-bec0-e000fc1258ca
+ref table LocalDateTable_32a590f9-9f47-41f4-8743-4d9d4e6b7ed2
+ref table LocalDateTable_2aa948b0-cdf7-4e5e-9cb4-907216f39e82
+ref table LocalDateTable_504f0d37-f9e1-4f7d-ab3e-425dc9d05ff3
+ref table LocalDateTable_060e7d7f-f7b7-4335-bceb-99ac511ec7f3
+ref table LocalDateTable_0db30c33-c303-4090-ab5c-16abf3bd62b0
+ref table LocalDateTable_8cc485a4-ace6-457e-b69a-c84d868a1535
+ref table dim_calendar
+ref table LocalDateTable_76154080-055a-425e-982c-2583e9971da6
+ref table LocalDateTable_a027eba7-c8c3-4eb9-9a43-25f53c09211e
+ref table LocalDateTable_88c8c471-9898-4f24-9265-86638b289336
+ref table LocalDateTable_c7167997-90b7-4956-9e44-982a492e4d1b
+ref table LocalDateTable_1ac128b5-82a1-4198-b67f-adb58f97f138
+ref table '*Measure table'
+ref table MOM
+ref table *OPs_Measure
+ref table 'shipping metrics'
+ref table 'Time view'
+ref table 'Pareto threshold'
+ref table *Product_Measure
+ref table *Customer_Measure
+ref table Parameter
+ref table Filter
+ref table 'Product Insight'
+ref table 'Weekly/Monthly 3'
+ref table *QoQ
+ref table 'Parameter 2'
+ref table 'Parameter 3'
+ref table 'Parameter 4'
+
+ref cultureInfo en-US
+
